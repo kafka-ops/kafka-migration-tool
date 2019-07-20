@@ -1,0 +1,4 @@
+action: register
+data: "{\"schema\": \"{\\\"type\\\": \\\"string\\\"}\"}"
+down: delete
+subject: "Kafka-key2"
