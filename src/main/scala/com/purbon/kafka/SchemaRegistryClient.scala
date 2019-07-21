@@ -1,60 +1,46 @@
 package com.purbon.kafka
 
-import java.io.IOException
+import com.purbon.kafka.clients.HttpClient
 
-import com.softwaremill.sttp._
+object SchemaRegistryClient {
+  val DEFAULT_BASE_URL = "http://localhost:8081"
+  val contentType = "application/vnd.schemaregistry.v1+json"
+}
 
-class SchemaRegistryClient(val url: String="http://localhost:8081") {
-
-  private val contentType = "application/vnd.schemaregistry.v1+json"
-  implicit val backend: SttpBackend[Id, Nothing] = HttpURLConnectionBackend()
+class SchemaRegistryClient(val url:String = SchemaRegistryClient.DEFAULT_BASE_URL,
+                           val httpClient:HttpClient = new HttpClient) {
 
   def addSchema(subject: String, data: String): String = {
-
-    val request: RequestT[Id, String, Nothing] = sttp.post(uri = uri"${url}/subjects/${subject}/versions")
-      .contentType(contentType)
-      .body(data)
-
-    parseResponse(request.send(), "addSchema")
+    val request = httpClient.post(uri = s"${url}/subjects/${subject}/versions",
+      contentType = SchemaRegistryClient.contentType,
+      body = data)
+    httpClient.parseRequest(request, "addSchema")
   }
 
   def deleteSchema(subject: String, version: Int): String = {
-    val request: Request[String, Nothing] = sttp.delete(uri = uri"${url}/subjects/${subject}/versions/${version}")
-    parseResponse(request.send(), "deleteSchema")
+    val request = httpClient.delete(s"${url}/subjects/${subject}/versions/${version}")
+    httpClient.parseRequest(request, "deleteSchema")
   }
 
   def testCompatibility(subject: String, data: String): String = {
-    val request: RequestT[Id, String, Nothing] = sttp.post(uri = uri"${url}/compatibility/subjects/${subject}/versions/latest" )
-      .contentType(contentType)
-      .body(data)
-
-    parseResponse(request.send(), "testCompatibility")
+    val request = httpClient.post(uri = s"${url}/compatibility/subjects/${subject}/versions/latest",
+      contentType = SchemaRegistryClient.contentType,
+      body = data)
+    httpClient.parseRequest(request, "testCompatibility")
   }
 
   def getTopLevelCompatibility(): String = {
-    val request: Request[String, Nothing] = sttp.get(uri = uri"${url}/config")
-    parseResponse(request.send(), "getTopLevelCompatibility")
+    val request = httpClient.get(s"${url}/config")
+    httpClient.parseRequest(request, "getTopLevelCompatibility")
+
   }
 
   def setTopLevelCompatibility(data: String): String = {
-    val request = sttp.put(uri = uri"${url}/config")
-      .contentType(contentType)
-      .body(data)
-    parseResponse(request.send(), "setTopLevelCompatibility")
+    val request = httpClient.put(uri = s"${url}/config",
+      contentType = SchemaRegistryClient.contentType,
+      body = data
+    )
+
+    httpClient.parseRequest(request, "setTopLevelCompatibility")
   }
-
-  private def parseResponse(response: Id[Response[String]], op: String): String = {
-
-    if (!response.isSuccess) {
-      println(s"Error while processing schema op ${op} request. Error code: ${response.statusText}, ${response.code}")
-    }
-
-    response.body match {
-      case Left(left) => {
-        throw new IOException(s"Error while processing schema op ${op} request, with ${left}")
-      }
-      case Right(right) => right
-    }
-  }
-
 }
