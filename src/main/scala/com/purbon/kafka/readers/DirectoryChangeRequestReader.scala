@@ -24,7 +24,7 @@ class DirectoryChangeRequestReader(directory: String) extends ChangeRequestReade
     }
   }
 
-  def load: MigrationDirectoryReaderIterator = {
+  def load: Iterator[ChangeRequest] = {
     val dir = new File(directory)
     new MigrationDirectoryReaderIterator(dir
       .listFiles()

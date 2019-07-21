@@ -14,22 +14,29 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.0:jar" level="project" />
-    <orderEntry type="library" scope="TEST" name="sbt: org.scalamock:scalamock_2.13:4.3.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.json4s:json4s-scalap_2.13:3.6.7:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.json4s:json4s-jackson_2.13:3.6.7:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.json4s:json4s-core_2.13:3.6.7:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.json4s:json4s-ast_2.13:3.6.7:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.thoughtworks.paranamer:paranamer:2.8:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-databind:2.9.8:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-core:2.9.8:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-annotations:2.9.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.yaml:snakeyaml:1.24:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.github.scopt:scopt_2.13:4.0.0-RC2:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.softwaremill.sttp:core_2.13:1.6.3:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.json4s:json4s-native_2.13:3.6.7:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.scala-lang:scala-reflect:2.13.0:jar" level="project" />
-    <orderEntry type="library" scope="TEST" name="sbt: org.scala-lang.modules:scala-xml_2.13:1.2.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.scalactic:scalactic_2.13:3.0.8:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: ru.vyarus:generics-resolver:3.0.0:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.objenesis:objenesis:2.6:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.mockito:mockito-scala_2.13:1.5.12:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.mockito:mockito-scala-scalatest_2.13:1.5.12:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.mockito:mockito-core:2.28.2:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: net.bytebuddy:byte-buddy-agent:1.9.10:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: net.bytebuddy:byte-buddy:1.9.10:jar" level="project" />
     <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest_2.13:3.0.8:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scalactic:scalactic_2.13:3.0.8:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scala-lang.modules:scala-xml_2.13:1.2.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-reflect:2.13.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.json4s:json4s-native_2.13:3.6.7:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.softwaremill.sttp:core_2.13:1.6.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.github.scopt:scopt_2.13:4.0.0-RC2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.yaml:snakeyaml:1.24:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-annotations:2.9.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-core:2.9.8:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-databind:2.9.8:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.thoughtworks.paranamer:paranamer:2.8:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.json4s:json4s-ast_2.13:3.6.7:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.json4s:json4s-core_2.13:3.6.7:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.json4s:json4s-jackson_2.13:3.6.7:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.json4s:json4s-scalap_2.13:3.6.7:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalamock:scalamock_2.13:4.3.0:jar" level="project" />
   </component>
 </module>

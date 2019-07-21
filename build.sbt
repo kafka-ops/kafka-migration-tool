@@ -14,6 +14,7 @@ libraryDependencies += "org.json4s" %% "json4s-jackson" % "3.6.7"
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.8"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.8" % Test
 libraryDependencies += "org.scalamock" %% "scalamock" % "4.3.0" % Test
+libraryDependencies += "org.mockito" %% "mockito-scala-scalatest" % "1.5.12" % Test
 
 
 mainClass in assembly := Some("com.purbon.kafka.KafkaMigrationToolCLI")
