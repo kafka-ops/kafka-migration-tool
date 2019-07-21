@@ -1,6 +1,6 @@
 package com.purbon.kafka
 
-import java.io.{FileInputStream, FileOutputStream, ObjectInputStream, ObjectOutputStream}
+import java.io._
 
 import org.json4s.JValue
 
@@ -36,6 +36,7 @@ class FileStatusKeeper {
 
 
   def load : Unit = {
+    createIfDoesNotExist(file)
     val ois = new ObjectInputStream(new FileInputStream(file))
     val storedCache = ois.readObject.asInstanceOf[Map[String, List[StatusUpdate]]]
     ois.close
@@ -46,5 +47,13 @@ class FileStatusKeeper {
     val oos = new ObjectOutputStream(new FileOutputStream(file))
     oos.writeObject(cache)
     oos.close
+  }
+
+  private def createIfDoesNotExist(filePath: String): Unit = {
+    val file = new File(filePath)
+    if (!file.exists()) {
+      file.createNewFile()
+      save
+    }
   }
 }
