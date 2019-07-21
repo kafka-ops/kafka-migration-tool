@@ -14,17 +14,17 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.json4s:json4s-native_2.13:3.6.7:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.softwaremill.sttp:core_2.13:1.6.3:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.github.scopt:scopt_2.13:4.0.0-RC2:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.yaml:snakeyaml:1.24:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-annotations:2.9.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-core:2.9.8:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-databind:2.9.8:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.thoughtworks.paranamer:paranamer:2.8:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.json4s:json4s-ast_2.13:3.6.7:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.json4s:json4s-core_2.13:3.6.7:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.json4s:json4s-jackson_2.13:3.6.7:jar" level="project" />
     <orderEntry type="library" name="sbt: org.json4s:json4s-scalap_2.13:3.6.7:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.json4s:json4s-jackson_2.13:3.6.7:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.json4s:json4s-core_2.13:3.6.7:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.json4s:json4s-ast_2.13:3.6.7:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.thoughtworks.paranamer:paranamer:2.8:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-databind:2.9.8:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-core:2.9.8:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-annotations:2.9.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.yaml:snakeyaml:1.24:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.github.scopt:scopt_2.13:4.0.0-RC2:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.softwaremill.sttp:core_2.13:1.6.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.json4s:json4s-native_2.13:3.6.7:jar" level="project" />
   </component>
 </module>
