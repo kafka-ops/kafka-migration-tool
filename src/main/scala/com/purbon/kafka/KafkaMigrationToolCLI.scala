@@ -1,19 +1,27 @@
 package com.purbon.kafka
 
+import com.purbon.kafka.readers.ChangeRequestReader
 import scopt.OParser
 
 object KafkaMigrationToolCLI {
 
+  val changeRequestReaderClassName = "com.purbon.kafka.readers.DirectoryChangeRequestReader"
 
   def main(args: Array[String]): Unit = {
 
     val fileStatusKeeper = new FileStatusKeeper
-
     try {
       fileStatusKeeper.load
-      fileStatusKeeper.print
       OParser.parse(parser, args, Config()) match {
-        case Some(config) => ActionService(config, fileStatusKeeper).run
+        case Some(config) => {
+
+          val changeRequestReader = Class.forName(changeRequestReaderClassName)
+            .getConstructor(classOf[String])
+            .newInstance(config.migrationsURI)
+            .asInstanceOf[ChangeRequestReader]
+
+          ActionService(config, fileStatusKeeper, changeRequestReader).run
+        }
         case _ => {
           //TODO fill if ever necessary
         }

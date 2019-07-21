@@ -2,20 +2,21 @@ package com.purbon.kafka
 
 import java.io.IOException
 
-import com.purbon.kafka.readers.DirectoryChangeRequestReader
+import com.purbon.kafka.readers.ChangeRequestReader
 import com.purbon.kafka.services.{CleanService, MigrationService, Service}
 
 object ActionService {
 
-  def apply(config: Config, fileStatusKeeper: FileStatusKeeper): Service = {
+  def apply(config: Config,
+            fileStatusKeeper: FileStatusKeeper,
+            changeRequestReader: ChangeRequestReader): Service = {
     val srClient = new SchemaRegistryClient(config.schemaRegistryUrl)
     config.action match {
       case Some(action) => {
         action match {
           case "migrate" => {
-            val migrationChangeRequestReader = new DirectoryChangeRequestReader(directory = config.migrationsURI)
             new MigrationService(srClient,
-              migrationChangeRequestReader,
+              changeRequestReader,
               fileStatusKeeper)
           }
           case "clean" => new CleanService(srClient)
