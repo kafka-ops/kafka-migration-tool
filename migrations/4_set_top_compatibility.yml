@@ -1,2 +1,3 @@
+type: schema-registry
 action: set_top_level_compatibility
 data: "{\"compatibility\":\"NONE\"}"

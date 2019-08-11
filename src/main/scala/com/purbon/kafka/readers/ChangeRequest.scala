@@ -9,6 +9,7 @@ trait ChangeRequest {
 class SingleChangeRequest extends ChangeRequest {
 
 
+  @BeanProperty var `type`: String = ""
   @BeanProperty var action: String = ""
   @BeanProperty var subject: String = ""
   @BeanProperty var data: String = ""

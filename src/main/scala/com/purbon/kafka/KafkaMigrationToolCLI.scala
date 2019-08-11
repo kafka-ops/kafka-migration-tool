@@ -42,6 +42,9 @@ object KafkaMigrationToolCLI {
 
       OParser.sequence(
         programName("Kafka Migration Tool"),
+        opt[String]('b', "brokers url")
+          .action((x,c) => c.copy( brokersUrl = x))
+          .text("Kafka brokers location"),
         opt[String]('s', "schema-registry url")
           .action((x,c) => c.copy( schemaRegistryUrl = x))
           .text("Schema Registry destination url"),
@@ -50,7 +53,13 @@ object KafkaMigrationToolCLI {
           .text("Where to find the stored migrations"),
         cmd("migrate")
           .action( (_,c) => c.copy(action = Some("migrate") ) )
-          .text("migrate command"),
+          .text("apply all migrations"),
+        cmd("migrate:up")
+          .action( (_,c) => c.copy(action = Some("migrate:up") ) )
+          .text("apply a selected migration change"),
+        cmd("migrate:down")
+          .action( (_,c) => c.copy(action = Some("migrate:down") ) )
+          .text("remove a selected migration change"),
         cmd("clean")
           .action( (_,c) => c.copy(action = Some("clean") ) )
           .text("clean command"),

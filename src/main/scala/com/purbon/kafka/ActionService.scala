@@ -19,6 +19,12 @@ object ActionService {
               changeRequestReader,
               fileStatusKeeper)
           }
+          case "migrate:up" => {
+            throw new NotImplementedError("Not yet implemented")
+          }
+          case "migrate:down" => {
+            throw new NotImplementedError("Not yet implemented")
+          }
           case "clean" => new CleanService(srClient)
           case _ => {
             throw new IOException("Incorrect action requested")
