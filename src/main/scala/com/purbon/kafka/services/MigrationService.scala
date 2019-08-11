@@ -32,13 +32,12 @@ class MigrationService(schemaRegistryClient: SchemaRegistryClient,
        schemaRegistryClient.addSchema(changeRequest.subject, changeRequest.data)
       }
       case "delete" => {
-        schemaRegistryClient.deleteSchema(changeRequest.subject, changeRequest.id)
+        schemaRegistryClient.deleteSchema(changeRequest.subject, changeRequest.id.toString)
       }
       case "set_top_level_compatibility" => {
         schemaRegistryClient.setTopLevelCompatibility(changeRequest.data)
       }
     }
-
     val responseJSON: JValue = parse(responseJsonText)
     fileStatusKeeper.update(subject = changeRequest.subject,
                             action = changeRequest.action,

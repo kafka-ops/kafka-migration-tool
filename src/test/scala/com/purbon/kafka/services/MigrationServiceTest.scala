@@ -39,7 +39,7 @@ class MigrationServiceTest  extends FunSpec
       changeRequest2.id = 2
 
       when(mockSRClient.addSchema(changeRequest1.subject,changeRequest1.data)).thenReturn("{\"id\":1}")
-      when(mockSRClient.deleteSchema(changeRequest2.subject,changeRequest2.id)).thenReturn("{\"id\":2}")
+      when(mockSRClient.deleteSchema(changeRequest2.subject,changeRequest2.id.toString)).thenReturn("{\"id\":2}")
 
       val mockChangeRequestIt = new MockChangeRequestIterator(List(changeRequest1, changeRequest2))
 
@@ -48,7 +48,7 @@ class MigrationServiceTest  extends FunSpec
       migrationService.run
 
       verify(mockSRClient, times(1)).addSchema(changeRequest1.subject, changeRequest1.data)
-      verify(mockSRClient, times(1)).deleteSchema(changeRequest2.subject, changeRequest2.id)
+      verify(mockSRClient, times(1)).deleteSchema(changeRequest2.subject, changeRequest2.id.toString)
 
     }
   }

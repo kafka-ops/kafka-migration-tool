@@ -28,7 +28,7 @@ class SchemaRegistryClientTest extends FunSpec
 
       (httpClient.delete _).expects(uri).once()
       (httpClient.parseRequest _).expects(*,*).once()
-      client.deleteSchema(subject = schemaSubject, version = 1)
+      client.deleteSchema(subject = schemaSubject, version = "1")
     }
 
     it ("should build a valid POST request for testing an Schema compatibility") {

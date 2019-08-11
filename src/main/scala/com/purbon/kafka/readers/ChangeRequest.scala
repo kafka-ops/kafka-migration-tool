@@ -13,7 +13,7 @@ class SingleChangeRequest extends ChangeRequest {
   @BeanProperty var subject: String = ""
   @BeanProperty var data: String = ""
   @BeanProperty var down: String = ""
-  @BeanProperty var id: Int = -1
+  @BeanProperty var id: Any = ""
 
 }
 

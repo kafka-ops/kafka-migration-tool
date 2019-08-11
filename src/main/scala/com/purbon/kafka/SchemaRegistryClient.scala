@@ -1,6 +1,7 @@
 package com.purbon.kafka
 
 import com.purbon.kafka.clients.HttpClient
+import org.json4s.native.Serialization
 
 object SchemaRegistryClient {
   val DEFAULT_BASE_URL = "http://localhost:8081"
@@ -10,6 +11,8 @@ object SchemaRegistryClient {
 class SchemaRegistryClient(val url:String = SchemaRegistryClient.DEFAULT_BASE_URL,
                            val httpClient:HttpClient = new HttpClient) {
 
+  implicit val formats = org.json4s.DefaultFormats
+
   def addSchema(subject: String, data: String): String = {
     val request = httpClient.post(uri = s"${url}/subjects/${subject}/versions",
       contentType = SchemaRegistryClient.contentType,
@@ -17,9 +20,10 @@ class SchemaRegistryClient(val url:String = SchemaRegistryClient.DEFAULT_BASE_UR
     httpClient.parseRequest(request, "addSchema")
   }
 
-  def deleteSchema(subject: String, version: Int): String = {
+  def deleteSchema(subject: String, version: String): String = {
     val request = httpClient.delete(s"${url}/subjects/${subject}/versions/${version}")
-    httpClient.parseRequest(request, "deleteSchema")
+    val response = httpClient.parseRequest(request, "deleteSchema")
+    Serialization.write(Map("id" -> response))
   }
 
   def testCompatibility(subject: String, data: String): String = {
