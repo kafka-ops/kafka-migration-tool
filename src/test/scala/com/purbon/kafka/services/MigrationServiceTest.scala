@@ -29,11 +29,13 @@ class MigrationServiceTest  extends FunSpec
       when(mockSRClient.url).thenCallRealMethod()
 
       val changeRequest1 = new SingleChangeRequest
+      changeRequest1.`type` = "schema-registry"
       changeRequest1.subject = "foo"
       changeRequest1.action = "register"
       changeRequest1.data = "{\"schema\": \"{\\\"type\\\": \\\"string\\\"}\"}"
 
       val changeRequest2 = new SingleChangeRequest
+      changeRequest2.`type` = "schema-registry"
       changeRequest2.subject = "foo"
       changeRequest2.action = "delete"
       changeRequest2.id = 2
