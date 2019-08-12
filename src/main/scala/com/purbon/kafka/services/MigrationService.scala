@@ -1,11 +1,15 @@
 package com.purbon.kafka.services
 
+import java.util.Collections
+
+import com.purbon.kafka.readers.{BrokerChangeRequest, ChangeRequestReader, SchemaRegistrySingleChangeRequest}
 import com.purbon.kafka.{FileStatusKeeper, SchemaRegistryClient}
-import com.purbon.kafka.readers.{ChangeRequestReader, GroupChangeRequest, SingleChangeRequest}
+import org.apache.kafka.clients.admin.{AdminClient, NewTopic}
 import org.json4s._
 import org.json4s.native.JsonMethods._
 
 class MigrationService(schemaRegistryClient: SchemaRegistryClient,
+                       adminClient: AdminClient,
                        changeRequestReader: ChangeRequestReader,
                        fileStatusKeeper: FileStatusKeeper) extends Service {
 
@@ -15,17 +19,15 @@ class MigrationService(schemaRegistryClient: SchemaRegistryClient,
       if (!changeRequest.name.startsWith("#")) {
         println(changeRequest.name)
         changeRequest match {
-          case scr: SingleChangeRequest => execute(scr)
-          case gcr: GroupChangeRequest => {
-            gcr.actions.foreach(execute)
-          }
+          case scr: SchemaRegistrySingleChangeRequest => execute(scr)
+          case bcr: BrokerChangeRequest => executeKafkaRequest(bcr)
         }
 
       }
     }
   }
 
-  private def execute(changeRequest: SingleChangeRequest): Unit = {
+  private def execute(changeRequest: SchemaRegistrySingleChangeRequest): Unit = {
     //println(s"${changeRequest.action} ${changeRequest.data} ${changeRequest.subject}")
     val responseJsonText = changeRequest.action match {
       case "register" => {
@@ -43,5 +45,20 @@ class MigrationService(schemaRegistryClient: SchemaRegistryClient,
                             action = changeRequest.action,
                             data = changeRequest.data,
                             responseJSON = responseJSON)
+  }
+
+  private def executeKafkaRequest(changeRequest: BrokerChangeRequest) : Unit = {
+    println(changeRequest.action)
+    changeRequest.action match {
+      case "create-topic" => {
+        val numPartitions: Int = changeRequest.config.numPartitions
+        val replicationFactor: Short = changeRequest.config.replicationFactor
+        val newTopic = new NewTopic(changeRequest.topic, numPartitions, replicationFactor)
+        adminClient.createTopics(Collections.singleton(newTopic))
+      }
+      case "delete-topic" => {
+        adminClient.deleteTopics(Collections.singleton(changeRequest.topic))
+      }
+    }
   }
 }

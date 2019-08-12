@@ -1,0 +1,3 @@
+type: broker
+action: delete-topic
+topic: foo

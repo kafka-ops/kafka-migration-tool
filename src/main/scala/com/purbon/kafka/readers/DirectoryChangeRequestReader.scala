@@ -1,17 +1,17 @@
 package com.purbon.kafka.readers
 
-import java.io.File
+import java.io.{File, IOException}
 
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
-import org.yaml.snakeyaml.error.YAMLException
 
 import scala.io.Source
 
 class DirectoryChangeRequestReader(directory: String) extends ChangeRequestReader {
 
-  val singleYamlParser = new Yaml(new Constructor(classOf[SingleChangeRequest]))
-  val groupYamlParser = new Yaml(new Constructor(classOf[GroupChangeRequest]))
+  val singleYamlParser = new Yaml(new Constructor(classOf[SchemaRegistrySingleChangeRequest]))
+  val brokerYamlParser = new Yaml(new Constructor(classOf[BrokerChangeRequest]))
+
 
   class MigrationDirectoryReaderIterator(fileIterator: Iterator[File]) extends Iterator[ChangeRequest] {
     override def hasNext: Boolean = fileIterator.hasNext
@@ -32,19 +32,33 @@ class DirectoryChangeRequestReader(directory: String) extends ChangeRequestReade
       .iterator)
   }
 
-  private def parseYml(data: String): ChangeRequest = {
-    try {
-      parseSingleYaml(data)
-    } catch {
-      case e: YAMLException => parseGroupYaml(data)
+  def parseYml(data: String): ChangeRequest = {
+
+    extractChangeRequestType(data) match {
+      case "schema-registry" => {
+        parseSingleYaml(data)
+      }
+      case "broker" => {
+        parseBrokerYaml(data)
+      }
     }
   }
 
-  private def parseSingleYaml(data: String): SingleChangeRequest = {
-    singleYamlParser.load(data).asInstanceOf[SingleChangeRequest]
+  private def extractChangeRequestType(data: String): String = {
+    val pattern = "type:\\s+([\\w|-]+)".r
+    data.split("\n")(0) match {
+      case pattern(requestType) => requestType
+      case _ => {
+        throw new IOException("The requested change is does not contains the required type attribute")
+      }
+    }
   }
 
-  private def parseGroupYaml(data: String): GroupChangeRequest = {
-     groupYamlParser.load(data).asInstanceOf[GroupChangeRequest]
+  private def parseBrokerYaml(data: String): BrokerChangeRequest = {
+    brokerYamlParser.load(data).asInstanceOf[BrokerChangeRequest]
+  }
+
+  private def parseSingleYaml(data: String): SchemaRegistrySingleChangeRequest = {
+    singleYamlParser.load(data).asInstanceOf[SchemaRegistrySingleChangeRequest]
   }
 }

@@ -1,7 +1,8 @@
 package com.purbon.kafka.services
 
-import com.purbon.kafka.readers.{ChangeRequest, DirectoryChangeRequestReader, SingleChangeRequest}
+import com.purbon.kafka.readers.{ChangeRequest, DirectoryChangeRequestReader, SchemaRegistrySingleChangeRequest}
 import com.purbon.kafka.{FileStatusKeeper, SchemaRegistryClient}
+import org.apache.kafka.clients.admin.AdminClient
 import org.mockito.Mockito
 import org.scalatest.{FunSpec, Matchers}
 import org.scalatestplus.mockito.MockitoSugar
@@ -21,20 +22,23 @@ class MigrationServiceTest  extends FunSpec
     it ("should process change request with the registry accordingly") {
 
       val mockSRClient = mock[SchemaRegistryClient]
+      val mockAdminClient = mock[AdminClient]
 
-      val migrationService = new MigrationService( schemaRegistryClient = mockSRClient,
+      val migrationService = new MigrationService(
+        schemaRegistryClient = mockSRClient,
+        adminClient = mockAdminClient,
         changeRequestReader = mockChangeRequestReader,
         fileStatusKeeper = mockFileStatusManager)
 
       when(mockSRClient.url).thenCallRealMethod()
 
-      val changeRequest1 = new SingleChangeRequest
+      val changeRequest1 = new SchemaRegistrySingleChangeRequest
       changeRequest1.`type` = "schema-registry"
       changeRequest1.subject = "foo"
       changeRequest1.action = "register"
       changeRequest1.data = "{\"schema\": \"{\\\"type\\\": \\\"string\\\"}\"}"
 
-      val changeRequest2 = new SingleChangeRequest
+      val changeRequest2 = new SchemaRegistrySingleChangeRequest
       changeRequest2.`type` = "schema-registry"
       changeRequest2.subject = "foo"
       changeRequest2.action = "delete"

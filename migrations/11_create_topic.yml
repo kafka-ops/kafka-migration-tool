@@ -1,0 +1,6 @@
+type: broker
+action: create-topic
+topic: bar
+config:
+  numPartitions: 1
+  replicationFactor: 1
