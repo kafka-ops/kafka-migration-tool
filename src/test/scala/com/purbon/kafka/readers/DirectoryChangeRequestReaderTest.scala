@@ -24,14 +24,28 @@ class DirectoryChangeRequestReaderTest  extends FunSpec
 
     describe("A broker change request reader") {
 
-      it ("shuold parse configuration parameters") {
+      it ("should parse configuration parameters") {
 
         val changeRequest = "type: broker\naction: create-topic\ntopic: foo\nconfig:\n  numPartitions: 1\n  replicationFactor: 1"
 
         reader.parseYml(changeRequest) match {
           case brokerRequest: BrokerChangeRequest => {
-            brokerRequest.config.numPartitions shouldBe 1
-            brokerRequest.config.replicationFactor shouldBe 1
+            brokerRequest.numPartitions shouldBe 1
+            brokerRequest.replicationFactor shouldBe 1
+          }
+          case _ => {
+            fail("Config could not be parsed")
+          }
+        }
+      }
+
+      it ("should parse open config parameters") {
+
+        val changeRequest = "type: broker\naction: create-topic\ntopic: foo\nconfig:\n  foo: bar"
+
+        reader.parseYml(changeRequest) match {
+          case brokerRequest: BrokerChangeRequest => {
+            brokerRequest.foo() shouldBe "bar"
           }
           case _ => {
             fail("Config could not be parsed")

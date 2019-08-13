@@ -1,6 +1,7 @@
 package com.purbon.kafka.readers
 
 import java.io.{File, IOException}
+import java.util
 
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
@@ -10,7 +11,7 @@ import scala.io.Source
 class DirectoryChangeRequestReader(directory: String) extends ChangeRequestReader {
 
   val singleYamlParser = new Yaml(new Constructor(classOf[SchemaRegistrySingleChangeRequest]))
-  val brokerYamlParser = new Yaml(new Constructor(classOf[BrokerChangeRequest]))
+  val rawYamlParser = new Yaml()
 
 
   class MigrationDirectoryReaderIterator(fileIterator: Iterator[File]) extends Iterator[ChangeRequest] {
@@ -55,7 +56,8 @@ class DirectoryChangeRequestReader(directory: String) extends ChangeRequestReade
   }
 
   private def parseBrokerYaml(data: String): BrokerChangeRequest = {
-    brokerYamlParser.load(data).asInstanceOf[BrokerChangeRequest]
+    val extractedData: util.LinkedHashMap[String, Any] = rawYamlParser.load[util.LinkedHashMap[String, Any]](data)
+    BrokerChangeRequest(extractedData)
   }
 
   private def parseSingleYaml(data: String): SchemaRegistrySingleChangeRequest = {

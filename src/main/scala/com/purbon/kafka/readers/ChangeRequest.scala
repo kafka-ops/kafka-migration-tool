@@ -1,6 +1,8 @@
 package com.purbon.kafka.readers
 
 
+import java.util
+import scala.language.dynamics
 import scala.beans.BeanProperty
 
 class ChangeRequest {
@@ -17,13 +19,28 @@ class SchemaRegistrySingleChangeRequest extends ChangeRequest {
 
 }
 
-class BrokerTopicConfig {
-  @BeanProperty var numPartitions: Int = 1
-  @BeanProperty var replicationFactor: Short = 1
+class BrokerChangeRequest extends ChangeRequest with Dynamic {
+  @BeanProperty var topic: String = ""
 
+  var config: util.LinkedHashMap[String, Any] = new util.LinkedHashMap[String, Any]
+
+  def numPartitions: Int = config.get("numPartitions").asInstanceOf[Int]
+
+  def replicationFactor: Int = config.get("replicationFactor").asInstanceOf[Int]
+
+  def applyDynamic(name: String)(args: Any*): String = {
+    config.get(name).asInstanceOf[String]
+  }
 }
 
-class BrokerChangeRequest extends ChangeRequest {
-  @BeanProperty var topic: String = ""
-  @BeanProperty var config: BrokerTopicConfig = new BrokerTopicConfig
+object BrokerChangeRequest {
+
+  def apply(extractedData: util.LinkedHashMap[String, Any]): BrokerChangeRequest = {
+    val changeRequest = new BrokerChangeRequest
+    changeRequest.setTopic(extractedData.get("topic").asInstanceOf[String])
+    changeRequest.`type` = extractedData.get("type").asInstanceOf[String]
+    changeRequest.setAction(extractedData.get("action").asInstanceOf[String])
+    changeRequest.config = extractedData.get("config").asInstanceOf[util.LinkedHashMap[String, Any]]
+    changeRequest
+  }
 }

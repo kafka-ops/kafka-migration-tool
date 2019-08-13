@@ -70,9 +70,11 @@ class KafkaExecutor(adminClient: AdminClient) extends Executor {
 
     changeRequest.action match {
       case CREATE_TOPIC_ACTION => {
-        val numPartitions: Int = changeRequest.config.numPartitions
-        val replicationFactor: Short = changeRequest.config.replicationFactor
-        val newTopic = new NewTopic(changeRequest.topic, numPartitions, replicationFactor)
+        val numPartitions = changeRequest.numPartitions
+        val replicationFactor = changeRequest.replicationFactor
+        val newTopic = new NewTopic(changeRequest.topic,
+          numPartitions,
+          replicationFactor.toShort)
         adminClient.createTopics(Collections.singleton(newTopic))
       }
       case DELETE_TOPIC_ACTION => {
