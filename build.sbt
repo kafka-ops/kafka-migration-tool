@@ -4,6 +4,9 @@ version := "0.0.1"
 
 scalaVersion := "2.13.0"
 
+enablePlugins(JavaAppPackaging)
+enablePlugins(UniversalPlugin)
+
 libraryDependencies += "com.github.scopt" %% "scopt" % "4.0.0-RC2"
 libraryDependencies += "com.softwaremill.sttp" %% "core" % "1.6.3"
 libraryDependencies += "org.yaml" % "snakeyaml" % "1.24"
@@ -19,3 +22,8 @@ libraryDependencies += "org.mockito" %% "mockito-scala-scalatest" % "1.5.12" % T
 libraryDependencies += "org.apache.kafka" % "kafka-clients" % "2.3.0"
 
 mainClass in assembly := Some("com.purbon.kafka.KafkaMigrationToolCLI")
+mainClass in Compile := Some("com.purbon.kafka.KafkaMigrationToolCLI")
+
+discoveredMainClasses in Compile := Seq()
+
+maintainer := "purbon@acm.org"
