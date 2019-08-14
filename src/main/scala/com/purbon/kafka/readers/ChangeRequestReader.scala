@@ -1,6 +1,5 @@
 package com.purbon.kafka.readers
 
-trait ChangeRequestReader {
+trait ChangeRequestReader extends Iterable[ChangeRequest] {
 
-  def load : Iterator[ChangeRequest]
 }

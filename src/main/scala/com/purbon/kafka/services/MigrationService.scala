@@ -12,7 +12,7 @@ class MigrationService(schemaRegistryClient: SchemaRegistryClient,
 
   override def run : Unit = {
     println(s"Running the Migration service with: ${schemaRegistryClient.url}")
-    changeRequestReader.load.foreach { changeRequest =>
+    changeRequestReader.foreach { changeRequest =>
       if (!changeRequest.name.startsWith("#")) {
         println(changeRequest.name)
         changeRequest match {
@@ -21,7 +21,6 @@ class MigrationService(schemaRegistryClient: SchemaRegistryClient,
           }
           case bcr: BrokerChangeRequest => KafkaExecutor(adminClient).execute(bcr)
         }
-
       }
     }
   }

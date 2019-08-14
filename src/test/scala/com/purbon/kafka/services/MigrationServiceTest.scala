@@ -1,6 +1,8 @@
 package com.purbon.kafka.services
 
-import com.purbon.kafka.readers.{ChangeRequest, DirectoryChangeRequestReader, SchemaRegistrySingleChangeRequest}
+import java.io.File
+
+import com.purbon.kafka.readers.{ChangeRequest, DirectoryChangeRequestReader, FSMigrationReaderIterator, SchemaRegistrySingleChangeRequest}
 import com.purbon.kafka.{FileStatusKeeper, SchemaRegistryClient}
 import org.apache.kafka.clients.admin.AdminClient
 import org.mockito.Mockito
@@ -15,7 +17,7 @@ class MigrationServiceTest  extends FunSpec
 
   describe ("A migration service manager") {
 
-    val mockChangeRequestReader = mock[DirectoryChangeRequestReader]
+
     val mockFileStatusManager = mock[FileStatusKeeper]
 
 
@@ -24,13 +26,7 @@ class MigrationServiceTest  extends FunSpec
       val mockSRClient = mock[SchemaRegistryClient]
       val mockAdminClient = mock[AdminClient]
 
-      val migrationService = new MigrationService(
-        schemaRegistryClient = mockSRClient,
-        adminClient = mockAdminClient,
-        changeRequestReader = mockChangeRequestReader,
-        fileStatusKeeper = mockFileStatusManager)
-
-      when(mockSRClient.url).thenCallRealMethod()
+      when(mockSRClient.url).thenReturn("http://foo:8082")
 
       val changeRequest1 = new SchemaRegistrySingleChangeRequest
       changeRequest1.`type` = "schema-registry"
@@ -48,8 +44,13 @@ class MigrationServiceTest  extends FunSpec
       when(mockSRClient.deleteSchema(changeRequest2.subject,changeRequest2.id.toString)).thenReturn("{\"id\":2}")
 
       val mockChangeRequestIt = new MockChangeRequestIterator(List(changeRequest1, changeRequest2))
+      val mockChangeRequestReader = new DirectoryChangeRequestReader(mockChangeRequestIt)
 
-      when(mockChangeRequestReader.load).thenReturn(mockChangeRequestIt)
+      val migrationService = new MigrationService(
+        schemaRegistryClient = mockSRClient,
+        adminClient = mockAdminClient,
+        changeRequestReader = mockChangeRequestReader,
+        fileStatusKeeper = mockFileStatusManager)
 
       migrationService.run
 
@@ -62,8 +63,8 @@ class MigrationServiceTest  extends FunSpec
 }
 
 
-class MockChangeRequestIterator(requests: List[ChangeRequest]) extends Iterator[ChangeRequest] {
-  val it = requests.iterator
+class MockChangeRequestIterator(requests: List[ChangeRequest]) extends FSMigrationReaderIterator(Iterator.empty[File]) {
+  val it: Iterator[ChangeRequest] = requests.iterator
 
   override def hasNext: Boolean = it.hasNext
 

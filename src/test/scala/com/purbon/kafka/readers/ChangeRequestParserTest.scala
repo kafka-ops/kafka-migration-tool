@@ -4,13 +4,16 @@ import org.scalatest.{FunSpec, Matchers}
 import org.scalatestplus.mockito.MockitoSugar
 
 
-class DirectoryChangeRequestReaderTest  extends FunSpec
+class ChangeRequestParserTest  extends FunSpec
   with Matchers
   with MockitoSugar {
 
-  describe("A change request reader") {
+  class DummyChangeRequestParser extends ChangeRequestParser {
 
-    val reader = new DirectoryChangeRequestReader("foo")
+  }
+  describe("A change request parser") {
+
+    val reader = new DummyChangeRequestParser
 
     it("should be able to extract request types from migration description files") {
 
