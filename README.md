@@ -52,7 +52,11 @@ As of the current version, the Kafka Migration tool support:
 In the future, it will support as well:
 
 * Change Request for ACL's
+* Change Request for users, ....
 
+## Check out the wiki for more documentation
+
+For more information on how to use the migration tool, please check the [wiki](https://github.com/purbon/kafka-migration-tool/wiki)
 
 ## Contributing
 
