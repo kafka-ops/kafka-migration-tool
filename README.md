@@ -54,6 +54,24 @@ In the future, it will support as well:
 * Change Request for ACL's
 * Change Request for users, ....
 
+## Willing to use the Kafka Migration tool?
+
+If you would like to use the kafka migration tool, there are a few options available for you:
+
+### Building from the source code
+
+To build from the source code you will need sbt and scala 2.13 available in your environment. This commands will be helpful for you:
+
+* _sbt clean assembly_ : this will generate a far jar with all necessary code and dependencies packaged
+* _sbt test_: will run the test suite available
+
+generated packages will be available for you in the target/ directory.
+
+### Download a pre-packaged release
+
+Currently available packages are ready for you in the [release](https://github.com/purbon/kafka-migration-tool/releases) page, feel free to download
+them and use it.
+
 ## Check out the wiki for more documentation
 
 For more information on how to use the migration tool, please check the [wiki](https://github.com/purbon/kafka-migration-tool/wiki)
