@@ -3,18 +3,22 @@ package com.purbon.kafka
 import com.purbon.kafka.readers.ChangeRequestReader
 import scopt.OParser
 
+// object KafkaMigrationToolCLI extends App
 object KafkaMigrationToolCLI {
 
+  // private val changeRequestReaderClassName
   val changeRequestReaderClassName = "com.purbon.kafka.readers.DirectoryChangeRequestReader"
 
   def main(args: Array[String]): Unit = {
 
     val fileStatusKeeper = new FileStatusKeeper
     try {
+      // does it really need to be stateful? How are you going to test it?
       fileStatusKeeper.load
       OParser.parse(parser, args, Config()) match {
         case Some(config) => {
 
+          // Why do you need reflection here?
           val changeRequestReader = Class.forName(changeRequestReaderClassName)
             .getConstructor(classOf[String])
             .newInstance(config.migrationsURI)
