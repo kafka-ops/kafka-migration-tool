@@ -14,6 +14,8 @@ CI/CD infrastructure is in charge to setup.
 
 The way the Kafka Migration tool (yeah, I did not work much on the naming) propose to solve this problem is using migrations. 
 Let's have the flywaydb of Apache Kafka.
+# flywaydb - that's an interesting reference. Are you thinking to support migrations versions?
+
 
 *NOTE:* This project is in active development, api's and feature sets are in constant evolution.
 

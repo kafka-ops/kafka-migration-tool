@@ -15,6 +15,9 @@ trait Executor {
 
 object SchemaRegistryExecutor {
 
+  // Java-ish naming =) Should be RegisterSchemaAction and etc.
+  // https://netvl.github.io/scala-guidelines/code-style/naming.html#Constant%20names
+  //
   val REGISTER_SCHEMA_ACTION: String = "register"
   val DELETE_SCHEMA_ACTION: String = "delete"
   val SET_COMPAT_LEVEL_ACTION: String = "set_top_level_compatibility"
@@ -66,6 +69,8 @@ class KafkaExecutor(adminClient: AdminClient) extends Executor {
 
   import KafkaExecutor._
 
+  // the method is stateless and can be placed in the object
+  // : Unit <-- is it a right thing to return?
   def execute(changeRequest: BrokerChangeRequest) : Unit = {
 
     changeRequest.action match {

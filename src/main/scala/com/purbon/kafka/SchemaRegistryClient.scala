@@ -4,6 +4,7 @@ import com.purbon.kafka.clients.HttpClient
 import org.json4s.native.Serialization
 
 object SchemaRegistryClient {
+  // inconsistent naming here.. I would prefer DefaultBaseUrl & ContentType
   val DEFAULT_BASE_URL = "http://localhost:8081"
   val contentType = "application/vnd.schemaregistry.v1+json"
 }

@@ -12,7 +12,9 @@ class MigrationService(schemaRegistryClient: SchemaRegistryClient,
 
   override def run : Unit = {
     println(s"Running the Migration service with: ${schemaRegistryClient.url}")
+
     changeRequestReader.foreach { changeRequest =>
+      // What is special about #?
       if (!changeRequest.name.startsWith("#")) {
         println(changeRequest.name)
         changeRequest match {
