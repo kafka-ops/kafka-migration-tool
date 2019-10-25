@@ -1,0 +1,6 @@
+jdk: oraclejdk11
+language: scala
+scala:
+- 2.13.0
+script:
+- sbt ++$TRAVIS_SCALA_VERSION compile compile test
