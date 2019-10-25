@@ -1,6 +1,13 @@
+env:
+  global:
+  - CC_TEST_REPORTER_ID=7c1a3e12ce0a88ee4bd2f35e1307340db38e8af68b490ffe26c467312f8944bb
 jdk: oraclejdk11
 language: scala
 scala:
 - 2.13.0
+before_script:
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
+- ./cc-test-reporter before-build
 script:
 - sbt ++$TRAVIS_SCALA_VERSION compile compile test
