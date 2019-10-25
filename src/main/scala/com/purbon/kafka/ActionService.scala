@@ -3,7 +3,7 @@ package com.purbon.kafka
 import java.io.IOException
 
 import com.purbon.kafka.readers.ChangeRequestReader
-import com.purbon.kafka.services.{CleanService, MigrationService, Service}
+import com.purbon.kafka.services.{MigrationCleanupService, MigrationService, Service}
 
 object ActionService {
 
@@ -15,17 +15,14 @@ object ActionService {
       case Some(action) => {
         action match {
           case "migrate" => {
-            new MigrationService(
-              changeRequestReader,
-              fileStatusKeeper)
+            new MigrationService(changeRequestReader, fileStatusKeeper)
           }
           case "migrate:up" => {
-            throw new NotImplementedError("Not yet implemented")
+            new MigrationService(changeRequestReader, fileStatusKeeper)
           }
           case "migrate:down" => {
-            throw new NotImplementedError("Not yet implemented")
+            new MigrationCleanupService(changeRequestReader, fileStatusKeeper)
           }
-          case "clean" => new CleanService
           case _ => {
             throw new IOException("Incorrect action requested")
           }

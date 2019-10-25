@@ -15,5 +15,18 @@ class MigrationService(changeRequestReader: ChangeRequestReader,
       }
     }
   }
+}
 
+class MigrationCleanupService(changeRequestReader: ChangeRequestReader,
+                       fileStatusKeeper: FileStatusKeeper) extends Service {
+
+  override def run : Unit = {
+    println(s"Running the Migration clean up service")
+    changeRequestReader.foreach { changeRequest =>
+      if (!changeRequest.name.startsWith("#")) {
+        println(changeRequest.name)
+        changeRequest.down()
+      }
+    }
+  }
 }
