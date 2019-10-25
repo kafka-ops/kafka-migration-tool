@@ -9,7 +9,7 @@ class SchemaSetupMigration(client: SchemaRegistryClient) extends SchemaMigration
   }
 
   def down(): Unit = {
-    remove("kafka-key2", "1")
+    remove("kafka-key2", "latest")
   }
 }
 scala.reflect.classTag[SchemaSetupMigration].runtimeClass
