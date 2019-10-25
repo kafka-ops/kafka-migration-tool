@@ -1,5 +1,7 @@
 # The Kafka Migration tool
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/e6f93902a81dcb8335a0/maintainability)](https://codeclimate.com/github/purbon/kafka-migration-tool/maintainability)
+
 If you're a developer building Kafka Streams applications or an devops responsible of operating an 
 Apache Kafka cluster you certainly have the need of moving changes between stages.
 
