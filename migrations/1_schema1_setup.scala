@@ -1,3 +1,5 @@
+import com.purbon.kafka.readers._
+
 class SchemaSetupMigration extends SchemaMigration {
 
   def up(): Unit = {
@@ -6,7 +8,8 @@ class SchemaSetupMigration extends SchemaMigration {
   }
 
   def down(): Unit = {
-    System.out.println("down");
+    println("down");
     remove("kafka-key2")
   }
 }
+scala.reflect.classTag[SchemaSetupMigration].runtimeClass

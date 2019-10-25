@@ -1,11 +1,7 @@
 package com.purbon.kafka.readers
 
-import java.io.IOException
-import java.util
-
-import org.yaml.snakeyaml.Yaml
-import org.yaml.snakeyaml.constructor.Constructor
-
+import scala.reflect.runtime.universe
+import scala.tools.reflect.ToolBox
 
 trait ChangeRequestParser {
 
@@ -14,46 +10,15 @@ trait ChangeRequestParser {
 
 
 class ScalaChangeRequestParser extends ChangeRequestParser {
-  override def parse(data: String): ChangeRequest = ???
-}
 
-class YAMLChangeRequestParser extends ChangeRequestParser {
-
-  val singleYamlParser = new Yaml(new Constructor(classOf[SchemaRegistrySingleChangeRequest]))
-  val rawYamlParser = new Yaml()
+  val tb = universe.runtimeMirror(getClass.getClassLoader).mkToolBox()
 
   override def parse(data: String): ChangeRequest = {
-    parseYml(data);
-  }
 
-  private def parseYml(data: String): ChangeRequest = {
+    val parsed: tb.u.Tree = tb.parse(data)
+    val clazz = tb.compile(parsed).apply().asInstanceOf[Class[Migration]]
+    clazz.getConstructor().newInstance()
 
-    extractChangeRequestType(data) match {
-      case "schema-registry" => {
-        parseSingleYaml(data)
-      }
-      case "broker" => {
-        parseBrokerYaml(data)
-      }
-    }
-  }
-
-  private def extractChangeRequestType(data: String): String = {
-    val pattern = "type:\\s+([\\w|-]+)".r
-    data.split("\n")(0) match {
-      case pattern(requestType) => requestType
-      case _ => {
-        throw new IOException("The requested change is does not contains the required type attribute")
-      }
-    }
-  }
-
-  private def parseBrokerYaml(data: String): BrokerChangeRequest = {
-    val extractedData: util.LinkedHashMap[String, Any] = rawYamlParser.load[util.LinkedHashMap[String, Any]](data)
-    BrokerChangeRequest(extractedData)
-  }
-
-  private def parseSingleYaml(data: String): SchemaRegistrySingleChangeRequest = {
-    singleYamlParser.load(data).asInstanceOf[SchemaRegistrySingleChangeRequest]
   }
 }
+

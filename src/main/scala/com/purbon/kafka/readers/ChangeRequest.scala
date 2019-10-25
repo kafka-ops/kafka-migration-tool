@@ -1,46 +1,31 @@
 package com.purbon.kafka.readers
 
 
-import java.util
 import scala.language.dynamics
-import scala.beans.BeanProperty
 
-class ChangeRequest {
-  @BeanProperty var name: String = ""
-  @BeanProperty var `type`: String = ""
-  @BeanProperty var action: String = ""
-  @BeanProperty var down: String = ""
+trait ChangeRequest {
+
+  var name: String = ""
+
+  def up(): Unit
+  def down(): Unit
 }
 
-class SchemaRegistrySingleChangeRequest extends ChangeRequest {
-  @BeanProperty var subject: String = ""
-  @BeanProperty var data: String = ""
-  @BeanProperty var id: Any = ""
+trait Migration extends ChangeRequest {
+
 
 }
 
-class BrokerChangeRequest extends ChangeRequest with Dynamic {
-  @BeanProperty var topic: String = ""
+abstract class TopicMigration extends Migration {
 
-  var config: util.LinkedHashMap[String, Any] = new util.LinkedHashMap[String, Any]
+}
 
-  def numPartitions: Int = config.get("numPartitions").asInstanceOf[Int]
+abstract class SchemaMigration extends Migration {
 
-  def replicationFactor: Int = config.get("replicationFactor").asInstanceOf[Int]
-
-  def applyDynamic(name: String)(args: Any*): String = {
-    config.get(name).asInstanceOf[String]
+  def register(subject: String, schema: Map[String, Any]): Unit = {
+    println("register "+subject)
   }
-}
-
-object BrokerChangeRequest {
-
-  def apply(extractedData: util.LinkedHashMap[String, Any]): BrokerChangeRequest = {
-    val changeRequest = new BrokerChangeRequest
-    changeRequest.setTopic(extractedData.get("topic").asInstanceOf[String])
-    changeRequest.`type` = extractedData.get("type").asInstanceOf[String]
-    changeRequest.setAction(extractedData.get("action").asInstanceOf[String])
-    changeRequest.config = extractedData.get("config").asInstanceOf[util.LinkedHashMap[String, Any]]
-    changeRequest
+  def remove(subject: String): Unit = {
+    println("remove "+subject);
   }
 }

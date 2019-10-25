@@ -7,6 +7,9 @@ scalaVersion := "2.13.0"
 enablePlugins(JavaAppPackaging)
 enablePlugins(UniversalPlugin)
 
+libraryDependencies += "org.scala-lang" % "scala-compiler" % "2.13.0"
+libraryDependencies += "org.scala-lang" % "scala-reflect" % "2.13.0"
+
 libraryDependencies += "com.github.scopt" %% "scopt" % "4.0.0-RC2"
 libraryDependencies += "com.softwaremill.sttp" %% "core" % "1.6.3"
 libraryDependencies += "org.yaml" % "snakeyaml" % "1.24"

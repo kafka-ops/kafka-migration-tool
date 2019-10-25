@@ -7,7 +7,7 @@ object DirectoryChangeRequestReader {
 
   def apply(directory:String): DirectoryChangeRequestReader = {
     val dir = new File(directory)
-    val parser = new YAMLChangeRequestParser
+    val parser = new ScalaChangeRequestParser
     val iterator = new FSMigrationReaderIterator(dir.listFiles()
                                                     .sortBy(_.getAbsolutePath)
                                                     .iterator, parser)
