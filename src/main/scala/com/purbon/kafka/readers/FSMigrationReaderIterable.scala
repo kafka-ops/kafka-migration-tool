@@ -2,6 +2,8 @@ package com.purbon.kafka.readers
 
 import java.io.File
 
+import com.purbon.kafka.parsers.{ChangeRequest, ChangeRequestParser}
+
 import scala.io.Source
 
 class FSMigrationReaderIterator(fileIterator: Iterator[File], crp: ChangeRequestParser)

@@ -1,6 +1,7 @@
-import com.purbon.kafka.readers._
+import com.purbon.kafka.SchemaRegistryClient
+import com.purbon.kafka.parsers.SchemaMigration
 
-class SchemaSetupMigration extends SchemaMigration {
+class SchemaSetupMigration(client: SchemaRegistryClient) extends SchemaMigration(client) {
 
   def up(): Unit = {
     val schema = Map( "schema" -> Map( "type" -> "string ") )
@@ -8,8 +9,7 @@ class SchemaSetupMigration extends SchemaMigration {
   }
 
   def down(): Unit = {
-    println("down");
-    remove("kafka-key2")
+    remove("kafka-key2", "1")
   }
 }
 scala.reflect.classTag[SchemaSetupMigration].runtimeClass

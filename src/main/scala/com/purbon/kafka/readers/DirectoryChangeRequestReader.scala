@@ -2,12 +2,12 @@ package com.purbon.kafka.readers
 
 import java.io.File
 
+import com.purbon.kafka.parsers.{ChangeRequest, ChangeRequestParser}
 
 object DirectoryChangeRequestReader {
 
-  def apply(directory:String): DirectoryChangeRequestReader = {
+  def apply(directory:String, parser: ChangeRequestParser): DirectoryChangeRequestReader = {
     val dir = new File(directory)
-    val parser = new ScalaChangeRequestParser
     val iterator = new FSMigrationReaderIterator(dir.listFiles()
                                                     .sortBy(_.getAbsolutePath)
                                                     .iterator, parser)

@@ -18,7 +18,6 @@ object ActionService {
   def apply(config: Config,
             fileStatusKeeper: FileStatusKeeper,
             changeRequestReader: ChangeRequestReader): Service = {
-    val srClient = new SchemaRegistryClient(config.schemaRegistryUrl)
     val adminClient: AdminClient = AdminClient.create(props(config))
 
     config.action match {
@@ -26,7 +25,6 @@ object ActionService {
         action match {
           case "migrate" => {
             new MigrationService(
-              srClient,
               adminClient,
               changeRequestReader,
               fileStatusKeeper)
@@ -37,7 +35,7 @@ object ActionService {
           case "migrate:down" => {
             throw new NotImplementedError("Not yet implemented")
           }
-          case "clean" => new CleanService(srClient)
+          case "clean" => new CleanService
           case _ => {
             throw new IOException("Incorrect action requested")
           }

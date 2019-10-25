@@ -2,7 +2,8 @@ package com.purbon.kafka.services
 
 import java.io.File
 
-import com.purbon.kafka.FileStatusKeeper
+import com.purbon.kafka.{FileStatusKeeper, SchemaRegistryClient}
+import com.purbon.kafka.parsers.{ChangeRequest, ScalaChangeRequestParser}
 import com.purbon.kafka.readers._
 import org.scalatest.{FunSpec, Matchers}
 import org.scalatestplus.mockito.MockitoSugar
@@ -59,9 +60,8 @@ class MigrationServiceTest  extends FunSpec
 
 }
 
-
-class MockChangeRequestIterator(requests: List[ChangeRequest])
-  extends FSMigrationReaderIterator(Iterator.empty[File], new ScalaChangeRequestParser) {
+class MockChangeRequestIterator(requests: List[ChangeRequest], client: SchemaRegistryClient)
+  extends FSMigrationReaderIterator(Iterator.empty[File], new ScalaChangeRequestParser(client)) {
 
   val it: Iterator[ChangeRequest] = requests.iterator
 

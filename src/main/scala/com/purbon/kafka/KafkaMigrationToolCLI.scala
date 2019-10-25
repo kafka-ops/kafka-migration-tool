@@ -1,5 +1,6 @@
 package com.purbon.kafka
 
+import com.purbon.kafka.parsers.ChangeRequestParser
 import com.purbon.kafka.readers.ChangeRequestReader
 import scopt.OParser
 
@@ -14,10 +15,11 @@ object KafkaMigrationToolCLI {
       fileStatusKeeper.load
       OParser.parse(parser, args, Config()) match {
         case Some(config) => {
+          val srClient = new SchemaRegistryClient(config.schemaRegistryUrl)
 
           val changeRequestReader = Class.forName(changeRequestReaderClassName)
-            .getConstructor(classOf[String])
-            .newInstance(config.migrationsURI)
+            .getConstructor(classOf[String], classOf[ChangeRequestParser])
+            .newInstance(config.migrationsURI, srClient)
             .asInstanceOf[ChangeRequestReader]
 
           ActionService(config, fileStatusKeeper, changeRequestReader).run
