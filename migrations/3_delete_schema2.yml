@@ -1,4 +1,0 @@
-type: schema-registry
-action: delete
-id: latest
-subject: "Kafka-key2"

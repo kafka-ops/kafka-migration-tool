@@ -4,13 +4,14 @@ import java.io.File
 
 import scala.io.Source
 
-class FSMigrationReaderIterator(fileIterator: Iterator[File]) extends Iterator[ChangeRequest]
-                                                              with ChangeRequestParser {
+class FSMigrationReaderIterator(fileIterator: Iterator[File], crp: ChangeRequestParser)
+  extends Iterator[ChangeRequest] {
+
   override def hasNext: Boolean = fileIterator.hasNext
 
   override def next(): ChangeRequest = {
     val nextFile = fileIterator.next()
-    val changeRequest : ChangeRequest = parseYml(Source.fromFile(nextFile).getLines.mkString("\n"))
+    val changeRequest : ChangeRequest = crp.parse(Source.fromFile(nextFile).getLines.mkString("\n"))
     changeRequest.name = nextFile.getName
     changeRequest
   }

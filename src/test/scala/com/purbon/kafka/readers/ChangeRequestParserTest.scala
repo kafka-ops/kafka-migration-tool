@@ -8,7 +8,7 @@ class ChangeRequestParserTest  extends FunSpec
   with Matchers
   with MockitoSugar {
 
-  class DummyChangeRequestParser extends ChangeRequestParser {
+  class DummyChangeRequestParser extends YAMLChangeRequestParser {
 
   }
   describe("A change request parser") {
@@ -18,10 +18,10 @@ class ChangeRequestParserTest  extends FunSpec
     it("should be able to extract request types from migration description files") {
 
       var changeRequestContentForBroker = "type: broker\naction: create-topic\ntopic: foo"
-      reader.parseYml(changeRequestContentForBroker) shouldBe a [BrokerChangeRequest]
+      reader.parse(changeRequestContentForBroker) shouldBe a [BrokerChangeRequest]
 
       var changeRequestContentForSR = "type: schema-registry\naction: register"
-      reader.parseYml(changeRequestContentForSR) shouldBe a [SchemaRegistrySingleChangeRequest]
+      reader.parse(changeRequestContentForSR) shouldBe a [SchemaRegistrySingleChangeRequest]
 
     }
 
@@ -31,7 +31,7 @@ class ChangeRequestParserTest  extends FunSpec
 
         val changeRequest = "type: broker\naction: create-topic\ntopic: foo\nconfig:\n  numPartitions: 1\n  replicationFactor: 1"
 
-        reader.parseYml(changeRequest) match {
+        reader.parse(changeRequest) match {
           case brokerRequest: BrokerChangeRequest => {
             brokerRequest.numPartitions shouldBe 1
             brokerRequest.replicationFactor shouldBe 1
@@ -46,7 +46,7 @@ class ChangeRequestParserTest  extends FunSpec
 
         val changeRequest = "type: broker\naction: create-topic\ntopic: foo\nconfig:\n  foo: bar"
 
-        reader.parseYml(changeRequest) match {
+        reader.parse(changeRequest) match {
           case brokerRequest: BrokerChangeRequest => {
             brokerRequest.foo() shouldBe "bar"
           }

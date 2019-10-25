@@ -6,12 +6,27 @@ import java.util
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
 
+
 trait ChangeRequestParser {
+
+  def parse(data: String): ChangeRequest
+}
+
+
+class ScalaChangeRequestParser extends ChangeRequestParser {
+  override def parse(data: String): ChangeRequest = ???
+}
+
+class YAMLChangeRequestParser extends ChangeRequestParser {
 
   val singleYamlParser = new Yaml(new Constructor(classOf[SchemaRegistrySingleChangeRequest]))
   val rawYamlParser = new Yaml()
 
-  def parseYml(data: String): ChangeRequest = {
+  override def parse(data: String): ChangeRequest = {
+    parseYml(data);
+  }
+
+  private def parseYml(data: String): ChangeRequest = {
 
     extractChangeRequestType(data) match {
       case "schema-registry" => {

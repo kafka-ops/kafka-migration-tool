@@ -2,7 +2,7 @@ package com.purbon.kafka.services
 
 import java.io.File
 
-import com.purbon.kafka.readers.{ChangeRequest, DirectoryChangeRequestReader, FSMigrationReaderIterator, SchemaRegistrySingleChangeRequest}
+import com.purbon.kafka.readers._
 import com.purbon.kafka.{FileStatusKeeper, SchemaRegistryClient}
 import org.apache.kafka.clients.admin.AdminClient
 import org.mockito.Mockito
@@ -63,7 +63,9 @@ class MigrationServiceTest  extends FunSpec
 }
 
 
-class MockChangeRequestIterator(requests: List[ChangeRequest]) extends FSMigrationReaderIterator(Iterator.empty[File]) {
+class MockChangeRequestIterator(requests: List[ChangeRequest])
+  extends FSMigrationReaderIterator(Iterator.empty[File], new YAMLChangeRequestParser) {
+
   val it: Iterator[ChangeRequest] = requests.iterator
 
   override def hasNext: Boolean = it.hasNext
