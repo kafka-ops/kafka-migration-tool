@@ -70,10 +70,6 @@ object KafkaMigrationToolCLI {
         cmd("migrate:down")
           .action( (_,c) => c.copy(action = Some("migrate:down") ) )
           .text("remove a selected migration change"),
-        cmd("clean")
-          .action( (_,c) => c.copy(action = Some("clean") ) )
-          .text("clean command"),
-
       )
     }
   }
