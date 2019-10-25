@@ -1,6 +1,7 @@
 package com.purbon.kafka.parsers
 
 import com.purbon.kafka.SchemaRegistryClient
+import com.purbon.kafka.clients.MigrationAdminClient
 
 import scala.reflect.runtime.universe
 import scala.tools.reflect.ToolBox
@@ -11,15 +12,19 @@ trait ChangeRequestParser {
 }
 
 
-class ScalaChangeRequestParser(client: SchemaRegistryClient) extends ChangeRequestParser {
+class ScalaChangeRequestParser(client: SchemaRegistryClient,
+                               adminClient: MigrationAdminClient) extends ChangeRequestParser {
 
   val tb = universe.runtimeMirror(getClass.getClassLoader).mkToolBox()
 
   override def parse(data: String): ChangeRequest = {
 
     val parsed: tb.u.Tree = tb.parse(data)
-    val clazz = tb.compile(parsed).apply().asInstanceOf[Class[Migration]]
-    clazz.getConstructor(classOf[SchemaRegistryClient]).newInstance(client)
+    tb.compile(parsed).apply()
+      .asInstanceOf[Class[Migration]]
+      .getConstructor(classOf[MigrationClients])
+      .newInstance(new MigrationClients(client, adminClient))
+
 
   }
 }

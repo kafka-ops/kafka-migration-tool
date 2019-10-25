@@ -1,7 +1,6 @@
-import com.purbon.kafka.SchemaRegistryClient
-import com.purbon.kafka.parsers.SchemaMigration
+import com.purbon.kafka.parsers.{MigrationClients, SchemaMigration}
 
-class SchemaSetupMigration(client: SchemaRegistryClient) extends SchemaMigration(client) {
+class SchemaSetupMigration(clients: MigrationClients) extends SchemaMigration(clients) {
 
   def up(): Unit = {
     val schema = Map( "schema" -> Map( "type" -> "string ") )

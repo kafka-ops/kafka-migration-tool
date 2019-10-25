@@ -2,10 +2,8 @@ package com.purbon.kafka.services
 
 import com.purbon.kafka.FileStatusKeeper
 import com.purbon.kafka.readers.ChangeRequestReader
-import org.apache.kafka.clients.admin.AdminClient
 
-class MigrationService(adminClient: AdminClient,
-                       changeRequestReader: ChangeRequestReader,
+class MigrationService(changeRequestReader: ChangeRequestReader,
                        fileStatusKeeper: FileStatusKeeper) extends Service {
 
   override def run : Unit = {

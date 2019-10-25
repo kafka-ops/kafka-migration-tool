@@ -1,7 +1,11 @@
 package com.purbon.kafka
 
-import com.purbon.kafka.parsers.ChangeRequestParser
+import java.util.Properties
+
+import com.purbon.kafka.clients.MigrationAdminClient
+import com.purbon.kafka.parsers.{ChangeRequestParser, ScalaChangeRequestParser}
 import com.purbon.kafka.readers.ChangeRequestReader
+import org.apache.kafka.clients.admin.{AdminClient, AdminClientConfig}
 import scopt.OParser
 
 object KafkaMigrationToolCLI {
@@ -15,11 +19,15 @@ object KafkaMigrationToolCLI {
       fileStatusKeeper.load
       OParser.parse(parser, args, Config()) match {
         case Some(config) => {
+
           val srClient = new SchemaRegistryClient(config.schemaRegistryUrl)
+          val adminClient: AdminClient = AdminClient.create(props(config))
+          val scalaChangeRequestParser = new ScalaChangeRequestParser(srClient, new MigrationAdminClient(adminClient))
 
           val changeRequestReader = Class.forName(changeRequestReaderClassName)
-            .getConstructor(classOf[String], classOf[ChangeRequestParser])
-            .newInstance(config.migrationsURI, srClient)
+            .getConstructor(classOf[String],
+              classOf[ChangeRequestParser])
+            .newInstance(config.migrationsURI, scalaChangeRequestParser)
             .asInstanceOf[ChangeRequestReader]
 
           ActionService(config, fileStatusKeeper, changeRequestReader).run
@@ -68,5 +76,11 @@ object KafkaMigrationToolCLI {
 
       )
     }
+  }
+
+  private def props(config: Config): Properties = {
+    val props = new Properties()
+    props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, config.brokersUrl)
+    props
   }
 }
