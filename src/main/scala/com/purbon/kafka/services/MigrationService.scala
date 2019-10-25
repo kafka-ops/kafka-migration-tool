@@ -3,6 +3,12 @@ package com.purbon.kafka.services
 import com.purbon.kafka.FileStatusKeeper
 import com.purbon.kafka.readers.ChangeRequestReader
 
+/**
+  * Service used to apply migrations to the cluster
+  *
+  * @param changeRequestReader a Change Request reader
+  * @param fileStatusKeeper the status keeper
+  */
 class MigrationService(changeRequestReader: ChangeRequestReader,
                        fileStatusKeeper: FileStatusKeeper) extends Service {
 
@@ -17,6 +23,12 @@ class MigrationService(changeRequestReader: ChangeRequestReader,
   }
 }
 
+/**
+  * Service used to remove migrations to the cluster
+  *
+  * @param changeRequestReader a Change Request reader
+  * @param fileStatusKeeper the status keeper
+  */
 class MigrationCleanupService(changeRequestReader: ChangeRequestReader,
                        fileStatusKeeper: FileStatusKeeper) extends Service {
 
