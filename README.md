@@ -2,6 +2,8 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/e6f93902a81dcb8335a0/maintainability)](https://codeclimate.com/github/purbon/kafka-migration-tool/maintainability)
 
+[![Build Status](https://travis-ci.org/purbon/kafka-migration-tool.svg?branch=master)](https://travis-ci.org/purbon/kafka-migration-tool)
+
 If you're a developer building Kafka Streams applications or an devops responsible of operating an 
 Apache Kafka cluster you certainly have the need of moving changes between stages.
 
