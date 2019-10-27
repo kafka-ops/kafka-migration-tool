@@ -55,6 +55,10 @@ abstract class TopicMigration(clients: MigrationClients) extends Migration {
     adminClient.createTopic(topicName, numPartitions, replicationFactor)
   }
 
+  def updateConfig(topicName: String, configs: Map[String, String]): Unit = {
+    adminClient.updateConfigs(topicName, configs)
+  }
+
   def deleteTopic(topicName: String): Unit = {
     adminClient
       .deleteTopic(topicName)
