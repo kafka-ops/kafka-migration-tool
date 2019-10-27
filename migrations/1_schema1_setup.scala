@@ -11,4 +11,3 @@ class SchemaSetupMigration(clients: MigrationClients) extends SchemaMigration(cl
     remove("kafka-key2", "latest")
   }
 }
-scala.reflect.classTag[SchemaSetupMigration].runtimeClass

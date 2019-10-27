@@ -10,4 +10,3 @@ class CreateTopicMigration(clients: MigrationClients) extends TopicMigration(cli
     deleteTopic("foo")
   }
 }
-scala.reflect.classTag[CreateTopicMigration].runtimeClass
