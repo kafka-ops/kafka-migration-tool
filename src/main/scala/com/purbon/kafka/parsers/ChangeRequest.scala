@@ -64,3 +64,27 @@ abstract class TopicMigration(clients: MigrationClients) extends Migration {
       .deleteTopic(topicName)
   }
 }
+
+abstract class RolesMigration(clients: MigrationClients) extends Migration {
+
+  var adminClient = clients.adminClient
+
+  def createAclsForConsumers(principal: String, topics: List[String]): Unit = {
+    topics.foreach(topic => createAclsForConsumer(principal, topic))
+  }
+
+  def createAclsForConsumer(principal: String, topic: String): Unit = {
+    adminClient
+      .setAclsForConsumer(principal, topic)
+  }
+
+  def createAclsForProducers(principal: String, topics: List[String]): Unit = {
+    topics.foreach(topic => createAclsForProducer(principal, topic))
+  }
+
+  def createAclsForProducer(principal: String, topic: String): Unit = {
+    adminClient
+      .setAclsForProducer(principal, topic)
+  }
+
+}
