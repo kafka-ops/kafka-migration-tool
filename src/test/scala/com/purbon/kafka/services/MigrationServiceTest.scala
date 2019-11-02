@@ -49,7 +49,7 @@ class MigrationServiceTest extends FunSpec
       val mockChangeRequestReader = new DirectoryChangeRequestReader(mockChangeRequestIt)
 
       val migrationService = new MigrationService(
-        changeRequestReader = mockChangeRequestReader,
+        reader = mockChangeRequestReader,
         fileStatusKeeper = mockFileStatusManager)
 
       migrationService.run
