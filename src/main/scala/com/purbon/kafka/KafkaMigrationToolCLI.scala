@@ -1,5 +1,8 @@
 package com.purbon.kafka
 
+import java.io.File
+import java.nio.channels.{FileChannel, FileLock}
+import java.nio.file.{Paths, StandardOpenOption}
 import java.util.Properties
 
 import com.purbon.kafka.clients.MigrationAdminClient
@@ -15,6 +18,8 @@ object KafkaMigrationToolCLI {
   def main(args: Array[String]): Unit = {
 
     val fileStatusKeeper = new FileStatusKeeper
+    val fileLockChannel = FileChannel.open(defaultFileLockPath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW)
+    val lock = acquireLock(fileLockChannel)
     try {
       fileStatusKeeper.load
       OParser.parse(parser, args, Config()) match {
@@ -31,6 +36,7 @@ object KafkaMigrationToolCLI {
             .asInstanceOf[ChangeRequestReader]
 
           ActionService(config, fileStatusKeeper, changeRequestReader).run
+
         }
         case _ => {
           //TODO fill if ever necessary
@@ -40,7 +46,20 @@ object KafkaMigrationToolCLI {
     finally
     {
       fileStatusKeeper.save
+      releaseLock(fileLockChannel, lock)
     }
+  }
+
+  val defaultFileLockPath = Paths.get(".lock")
+
+  private def acquireLock(fileChannel: FileChannel): FileLock = {
+    fileChannel.tryLock();
+  }
+
+  private def releaseLock(fileChannel: FileChannel, lock: FileLock): Unit = {
+    lock.release();
+    fileChannel.close()
+    new File(defaultFileLockPath.getFileName.toString).delete()
   }
 
   private def parser: OParser[Unit, Config] = {
