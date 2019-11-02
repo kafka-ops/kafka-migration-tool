@@ -3,7 +3,7 @@ package com.purbon.kafka
 import java.io.IOException
 
 import com.purbon.kafka.readers.ChangeRequestReader
-import com.purbon.kafka.services.{MigrationCleanupService, MigrationService, Service}
+import com.purbon.kafka.services.{MigrationCleanupService, MigrationGenerationService, MigrationService, Service}
 
 object ActionService {
 
@@ -22,6 +22,9 @@ object ActionService {
           }
           case "migrate:down" => {
             new MigrationCleanupService(changeRequestReader, fileStatusKeeper)
+          }
+          case "generate" => {
+            new MigrationGenerationService(config.migrationsURI, config.migrationType)
           }
           case _ => {
             throw new IOException("Incorrect action requested")

@@ -89,6 +89,12 @@ object KafkaMigrationToolCLI {
         cmd("migrate:down")
           .action( (_,c) => c.copy(action = Some("migrate:down") ) )
           .text("remove a selected migration change"),
+        cmd("generate")
+          .action( (_,c) => c.copy(action = Some("generate") ) )
+          .text("Generate a migration"),
+        opt[String]('t', "migrationType type")
+          .action((x,c) => c.copy( migrationType = Some(x)))
+          .text("The Migration Type (schemaMigration, topicMigration, accessMigration)"),
       )
     }
   }

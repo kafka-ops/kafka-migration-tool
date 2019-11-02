@@ -1,6 +1,9 @@
 package com.purbon.kafka.services
 
+import java.io.IOException
+
 import com.purbon.kafka.FileStatusKeeper
+import com.purbon.kafka.generator.MigrationGenerator
 import com.purbon.kafka.parsers.ChangeRequest
 import com.purbon.kafka.readers.ChangeRequestReader
 
@@ -42,6 +45,22 @@ class MigrationService(reader: ChangeRequestReader,
     }
   }
 }
+
+class MigrationGenerationService(path: String, migrationTypeOption: Option[String]) extends Service {
+  override def run: Unit = {
+
+    migrationTypeOption match {
+      case Some(migrationType:String) => {
+          MigrationGenerator.generate(path, migrationType)
+      }
+      case None => {
+        throw new IOException
+      }
+    }
+
+  }
+}
+
 
 /**
   * Service used to remove migrations to the cluster
