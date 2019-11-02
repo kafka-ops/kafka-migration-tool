@@ -77,7 +77,7 @@ class MigrationAdminClient(adminClient: AdminClient) {
         .all
         .get
     catch {
-      case e: _ =>
+      case e: Exception =>
         LOGGER.error(e)
     }
   }
