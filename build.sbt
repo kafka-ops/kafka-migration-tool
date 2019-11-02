@@ -34,7 +34,8 @@ discoveredMainClasses in Compile := Seq()
 maintainer := "purbon@acm.org"
 
 lazy val excludes = jacocoExcludes in Test  :=Seq(
-  "com.purbon.kafka.KafkaMigrationToolCLI*"
+  "com.purbon.kafka.KafkaMigrationToolCLI*",
+  "com.purbon.kafka.clients.*"
 )
 
 lazy val jacoco = jacocoReportSettings in test  :=JacocoReportSettings(
