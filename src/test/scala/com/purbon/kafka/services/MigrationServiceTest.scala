@@ -3,58 +3,58 @@ package com.purbon.kafka.services
 import java.io.File
 
 import com.purbon.kafka.clients.MigrationAdminClient
-import com.purbon.kafka.parsers.{ChangeRequest, ScalaChangeRequestParser}
+import com.purbon.kafka.parsers.{ChangeRequest, MigrationClients, ScalaChangeRequestParser, SchemaMigration}
 import com.purbon.kafka.readers._
 import com.purbon.kafka.{FileStatusKeeper, SchemaRegistryClient}
+import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.scalatest.{FunSpec, Matchers}
-import org.scalatestplus.mockito.MockitoSugar
 
-class MigrationServiceTest  extends FunSpec
+class MigrationServiceTest extends FunSpec
   with Matchers
-  with MockitoSugar {
+  with MockitoSugar
+  with ArgumentMatchersSugar {
 
   describe ("A migration service manager") {
 
-
     val mockFileStatusManager = mock[FileStatusKeeper]
 
-
     it ("should process change request with the registry accordingly") {
-/*
+
       val mockSRClient = mock[SchemaRegistryClient]
-      val mockAdminClient = mock[AdminClient]
+      val mockAdminClient = mock[MigrationAdminClient]
 
       when(mockSRClient.url).thenReturn("http://foo:8082")
 
-      val changeRequest1 = new YAMLSchemaRegistrySingleChangeRequest
-      changeRequest1.`type` = "schema-registry"
-      changeRequest1.subject = "foo"
-      changeRequest1.action = "register"
-      changeRequest1.data = "{\"schema\": \"{\\\"type\\\": \\\"string\\\"}\"}"
+      class SchemaSetupMigration(clients: MigrationClients) extends SchemaMigration(clients) {
 
-      val changeRequest2 = new YAMLSchemaRegistrySingleChangeRequest
-      changeRequest2.`type` = "schema-registry"
-      changeRequest2.subject = "foo"
-      changeRequest2.action = "delete"
-      changeRequest2.id = 2
+        def up(): Unit = {
+          val schema = Map( "schema" -> Map( "type" -> "string ") )
+          register("kafka-key2", schema)
+        }
 
-      when(mockSRClient.addSchema(changeRequest1.subject,changeRequest1.data)).thenReturn("{\"id\":1}")
-      when(mockSRClient.deleteSchema(changeRequest2.subject,changeRequest2.id.toString)).thenReturn("{\"id\":2}")
+        def down(): Unit = {
+          remove("kafka-key2", "latest")
+        }
+      }
 
-      val mockChangeRequestIt = new MockChangeRequestIterator(List(changeRequest1, changeRequest2))
+      val migrationClients = new MigrationClients(schemaRegistry = mockSRClient, adminClient = mockAdminClient)
+      val changeRequest1 = new SchemaSetupMigration(migrationClients);
+
+      when(mockSRClient.addSchema(eqTo("kafka-key2"), any[String])).thenReturn("{\"id\":1}")
+
+      val mockChangeRequestIt = new MockChangeRequestIterator(
+        requests = List(changeRequest1),
+        client = mockSRClient,
+        adminClient = mockAdminClient)
       val mockChangeRequestReader = new DirectoryChangeRequestReader(mockChangeRequestIt)
 
       val migrationService = new MigrationService(
-        schemaRegistryClient = mockSRClient,
-        adminClient = mockAdminClient,
         changeRequestReader = mockChangeRequestReader,
         fileStatusKeeper = mockFileStatusManager)
 
       migrationService.run
 
-      verify(mockSRClient, times(1)).addSchema(changeRequest1.subject, changeRequest1.data)
-      verify(mockSRClient, times(1)).deleteSchema(changeRequest2.subject, changeRequest2.id.toString)
-      */
+      verify(mockSRClient, times(1)).addSchema(eqTo("kafka-key2"), any[String])
 
     }
   }
