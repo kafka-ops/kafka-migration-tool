@@ -24,10 +24,6 @@ object CliTool {
           val changeRequestParser = new ScalaChangeRequestParser(srClient, migrationAdminClient)
           val changeRequestReader = buildChangeRequestReader(config, changeRequestParser)
           ActionService(config, stateManager, changeRequestReader).run
-          ReportService(
-            schemaRegistryClient = srClient,
-            kafkaAdminClient = migrationAdminClient
-          ).run
         }
         case _ => {
           //TODO fill if ever necessary

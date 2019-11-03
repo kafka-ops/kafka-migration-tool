@@ -4,13 +4,15 @@ import com.purbon.kafka.clients.HttpClient
 import org.json4s.native.Serialization
 
 object SchemaRegistryClient {
-  val DEFAULT_BASE_URL = "http://localhost:8081"
+  val baseUrl = "http://localhost:8081"
   val contentType = "application/vnd.schemaregistry.v1+json"
 }
 
-class SchemaRegistryClient(val url:String = SchemaRegistryClient.DEFAULT_BASE_URL,
+class SchemaRegistryClient(val url:String = SchemaRegistryClient.baseUrl,
                            val httpClient:HttpClient = new HttpClient) {
-  def dump = ???
+  def dump: Unit =  {
+    // doNothing yet
+  }
 
 
   implicit val formats = org.json4s.DefaultFormats

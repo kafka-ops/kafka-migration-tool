@@ -119,7 +119,6 @@ class MigrationAdminClient(adminClient: AdminClient) {
   }
 
 
-
   private def createAcls(acls: List[AclBinding]): Unit = {
     try
       adminClient
