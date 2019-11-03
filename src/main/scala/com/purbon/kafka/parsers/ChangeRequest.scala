@@ -1,7 +1,10 @@
 package com.purbon.kafka.parsers
 
+import java.util.concurrent.ExecutionException
+
 import com.purbon.kafka.SchemaRegistryClient
 import com.purbon.kafka.clients.MigrationAdminClient
+import org.apache.kafka.common.errors.TopicExistsException
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
 
@@ -28,9 +31,14 @@ trait NiceSchemaMigrationOperations {
   implicit val formats = DefaultFormats
 
   def register(subject: String, schema: Map[String, Any])(implicit client: SchemaRegistryClient): Unit = {
-    println(s"register ${subject}")
-    client.addSchema(subject, write(schema))
+    register(subject, write(schema))
   }
+
+  def register(subject: String, schema: String)(implicit client: SchemaRegistryClient): Unit = {
+    println(s"register ${subject}")
+    client.addSchema(subject, schema)
+  }
+
   def remove(subject: String, version: String)(implicit client: SchemaRegistryClient): Unit = {
     println(s"remove ${subject}")
     client.deleteSchema(subject, version)
@@ -52,7 +60,16 @@ abstract class TopicMigration(clients: MigrationClients) extends Migration {
   var adminClient = clients.adminClient
 
   def createTopic(topicName: String, numPartitions: Int, replicationFactor: Short): Unit = {
-    adminClient.createTopic(topicName, numPartitions, replicationFactor)
+    try {
+      adminClient.createTopic(topicName, numPartitions, replicationFactor)
+    } catch {
+      case e: ExecutionException => {
+        e.getCause match {
+          case cause: TopicExistsException => println(cause.getMessage)
+          case _: Exception => throw e
+        }
+      }
+    }
   }
 
   def updateConfig(topicName: String, configs: Map[String, String]): Unit = {

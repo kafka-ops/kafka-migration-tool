@@ -3,7 +3,10 @@ import com.purbon.kafka.parsers.{MigrationClients, SchemaMigration}
 class SchemaSetupMigration(clients: MigrationClients) extends SchemaMigration(clients) {
 
   def up(): Unit = {
-    val schema = Map( "schema" -> Map( "type" -> "string ") )
+    val schema = """
+        |{"schema": "{\"type\": \"string\"}"}
+      """.stripMargin
+
     register("kafka-key2", schema)
   }
 

@@ -25,8 +25,8 @@ class MigrationService(reader: ChangeRequestReader,
 
       reader.foreach { request =>
         if (!request.name.startsWith("#")) {
-          println("Applying ${request.name}")
-          appliedChanges += request
+          println(s"Applying ${request.name}")
+          appliedChanges.append(request)
           request.up
         }
       }
@@ -34,6 +34,7 @@ class MigrationService(reader: ChangeRequestReader,
 
     } catch {
       case e: Exception => {
+        e.printStackTrace()
         println("Rollback applied changes")
         rollback(appliedChanges)
         stateManager.updateLastMigration("")
@@ -42,7 +43,7 @@ class MigrationService(reader: ChangeRequestReader,
   }
 
   def rollback(changes : ArrayBuffer[ChangeRequest]): Unit = {
-    reader.foreach { request =>
+    changes.foreach { request =>
       println(s"Rollback the request ${request.name}")
       request.down()
     }
