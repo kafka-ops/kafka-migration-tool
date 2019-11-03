@@ -2,7 +2,7 @@ package com.purbon.kafka.clients
 import java.util
 
 import org.apache.kafka.clients.admin.AlterConfigOp.OpType
-import org.apache.kafka.clients.admin.{AdminClient, AlterConfigOp, ConfigEntry, NewTopic}
+import org.apache.kafka.clients.admin._
 import org.apache.kafka.common.acl.{AccessControlEntry, AclBinding, AclOperation, AclPermissionType}
 import org.apache.kafka.common.config.ConfigResource
 import org.apache.kafka.common.config.ConfigResource.Type
@@ -44,7 +44,6 @@ class MigrationAdminClient(adminClient: AdminClient) {
       .get()
   }
 
-
   def deleteTopic(topicName: String): Unit = {
     adminClient
       .deleteTopics(List(topicName).asJava)
@@ -68,6 +67,57 @@ class MigrationAdminClient(adminClient: AdminClient) {
       new AclBinding(resourcePatternGroup, entryGroup))
     )
   }
+
+  def dump: Unit = {
+    val topics: util.Set[String] = adminClient.listTopics()
+      .names()
+      .get
+
+    val topicDetails: util.Map[String, TopicDescription] = adminClient.describeTopics(topics)
+      .all()
+      .get()
+
+    val topicConfigs: util.Map[ConfigResource, Config] = adminClient
+        .describeConfigs(topics.asScala.map( topic => new ConfigResource(ConfigResource.Type.TOPIC, topic)).asJavaCollection)
+        .all()
+        .get
+
+    topics
+      .asScala
+      .foreach { topic =>
+        val config = topicConfigs.get(new ConfigResource(ConfigResource.Type.TOPIC, topic))
+        val details = topicDetails.get(topic)
+        printTopic(topic, details, config)
+      }
+
+  }
+
+  private def printTopic(topic: String, description: TopicDescription, topicConfig: Config): Unit = {
+    println(topic);
+    println(s"isInternal: ${description.isInternal}")
+    description.partitions
+      .asScala
+      .foreach{ info =>
+        print(s"PartitionID: ${info.partition()}")
+        print(" ")
+        print(s"Leader: ${info.leader().id()}")
+        print(" ")
+        print(s"Isr: ${info.isr.asScala.map( r => s"${r.id()}").mkString(",")}")
+        print(" ")
+        print(s"Replicas: ${info.replicas().asScala.map( r => s"${r.id()}").mkString(",")}")
+        println()
+      }
+    printTopicConfig(topicConfig)
+  }
+
+  private def printTopicConfig(topicConfig: Config): Unit = {
+    println("Config: ")
+    topicConfig
+      .entries()
+      .asScala
+      .foreach(println)
+  }
+
 
 
   private def createAcls(acls: List[AclBinding]): Unit = {

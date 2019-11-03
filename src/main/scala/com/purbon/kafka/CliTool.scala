@@ -19,10 +19,15 @@ object CliTool {
       stateManager.load
       OParser.parse(parser, args, Config()) match {
         case Some(config) => {
-          val changeRequestParser = buildChangeRequestParser(config)
+          val srClient = new SchemaRegistryClient(config.schemaRegistryUrl)
+          val migrationAdminClient: MigrationAdminClient = new MigrationAdminClient(AdminClient.create(props(config)))
+          val changeRequestParser = new ScalaChangeRequestParser(srClient, migrationAdminClient)
           val changeRequestReader = buildChangeRequestReader(config, changeRequestParser)
           ActionService(config, stateManager, changeRequestReader).run
-
+          ReportService(
+            schemaRegistryClient = srClient,
+            kafkaAdminClient = migrationAdminClient
+          ).run
         }
         case _ => {
           //TODO fill if ever necessary
@@ -34,12 +39,6 @@ object CliTool {
       ExecutionLock.releaseLock(cliLock)
       stateManager.save
     }
-  }
-
-  private def buildChangeRequestParser(config: Config): ChangeRequestParser = {
-    val srClient = new SchemaRegistryClient(config.schemaRegistryUrl)
-    val adminClient: AdminClient = AdminClient.create(props(config))
-    new ScalaChangeRequestParser(srClient, new MigrationAdminClient(adminClient))
   }
 
   private def buildChangeRequestReader(config: Config, changeRequestParser: ChangeRequestParser) : ChangeRequestReader = {

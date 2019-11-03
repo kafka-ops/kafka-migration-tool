@@ -10,6 +10,8 @@ object SchemaRegistryClient {
 
 class SchemaRegistryClient(val url:String = SchemaRegistryClient.DEFAULT_BASE_URL,
                            val httpClient:HttpClient = new HttpClient) {
+  def dump = ???
+
 
   implicit val formats = org.json4s.DefaultFormats
 
