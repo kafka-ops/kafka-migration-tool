@@ -1,8 +1,5 @@
 package com.purbon.kafka
 
-import java.io.File
-import java.nio.channels.{FileChannel, FileLock}
-import java.nio.file.{Paths, StandardOpenOption}
 import java.util.Properties
 
 import com.purbon.kafka.clients.MigrationAdminClient
@@ -16,13 +13,10 @@ object KafkaMigrationToolCLI {
   val changeRequestReaderClassName = "com.purbon.kafka.readers.DirectoryChangeRequestReader"
 
   def main(args: Array[String]): Unit = {
-
     val stateManager = new StateManager(handler = new LocalStateHandler)
-    val fileLockChannel = FileChannel.open(defaultFileLockPath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW)
-    val lock = acquireLock(fileLockChannel)
+    val cliLock = ExecutionLock.acquireLock
     try {
       stateManager.load
-      stateManager.print
       OParser.parse(parser, args, Config()) match {
         case Some(config) => {
 
@@ -46,21 +40,9 @@ object KafkaMigrationToolCLI {
     }
     finally
     {
+      ExecutionLock.releaseLock(cliLock)
       stateManager.save
-      releaseLock(fileLockChannel, lock)
     }
-  }
-
-  val defaultFileLockPath = Paths.get(".lock")
-
-  private def acquireLock(fileChannel: FileChannel): FileLock = {
-    fileChannel.tryLock();
-  }
-
-  private def releaseLock(fileChannel: FileChannel, lock: FileLock): Unit = {
-    lock.release();
-    fileChannel.close()
-    new File(defaultFileLockPath.getFileName.toString).delete()
   }
 
   private def parser: OParser[Unit, Config] = {
