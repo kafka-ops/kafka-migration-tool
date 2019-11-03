@@ -1,6 +1,6 @@
-import com.purbon.kafka.parsers.{MigrationClients, RoleMigration}
+import com.purbon.kafka.parsers.{MigrationClients, RolesMigration}
 
-class CreateRoleMigration(clients: MigrationClients) extends RoleMigration(clients) {
+class CreateRoleMigration(clients: MigrationClients) extends RolesMigration(clients) {
 
   def up(): Unit = {
     setAclsForConsumer("User:App1", "topicA")

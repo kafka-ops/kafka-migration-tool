@@ -3,7 +3,7 @@ package com.purbon.kafka.services
 import java.io.IOException
 
 import com.purbon.kafka.FileStatusKeeper
-import com.purbon.kafka.generator.MigrationGenerator
+import com.purbon.kafka.generator.{MigrationFileWriter, MigrationGenerator}
 import com.purbon.kafka.parsers.ChangeRequest
 import com.purbon.kafka.readers.ChangeRequestReader
 
@@ -46,12 +46,17 @@ class MigrationService(reader: ChangeRequestReader,
   }
 }
 
+/**
+  * Migration Generation service, write down migration templates to be fill up
+  * @param path The destination path for the template
+  * @param migrationTypeOption The migration type (schemaMigration, topicMigration, accessMigration)
+  */
 class MigrationGenerationService(path: String, migrationTypeOption: Option[String]) extends Service {
   override def run: Unit = {
 
     migrationTypeOption match {
       case Some(migrationType:String) => {
-          MigrationGenerator.generate(path, migrationType)
+          MigrationGenerator.generate(migrationType, writer = new MigrationFileWriter(path))
       }
       case None => {
         throw new IOException
