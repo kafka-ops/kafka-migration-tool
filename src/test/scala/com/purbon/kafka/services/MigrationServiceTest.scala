@@ -5,7 +5,7 @@ import java.io.File
 import com.purbon.kafka.clients.MigrationAdminClient
 import com.purbon.kafka.parsers.{ChangeRequest, MigrationClients, ScalaChangeRequestParser, SchemaMigration}
 import com.purbon.kafka.readers._
-import com.purbon.kafka.{FileStatusKeeper, SchemaRegistryClient}
+import com.purbon.kafka.{StateManager, SchemaRegistryClient}
 import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.scalatest.{FunSpec, Matchers}
 
@@ -16,7 +16,7 @@ class MigrationServiceTest extends FunSpec
 
   describe ("A migration service manager") {
 
-    val mockFileStatusManager = mock[FileStatusKeeper]
+    val mockFileStateManager = mock[StateManager]
 
     it ("should process change request with the registry accordingly") {
 
@@ -38,7 +38,8 @@ class MigrationServiceTest extends FunSpec
       }
 
       val migrationClients = new MigrationClients(schemaRegistry = mockSRClient, adminClient = mockAdminClient)
-      val changeRequest1 = new SchemaSetupMigration(migrationClients);
+      val changeRequest1 = new SchemaSetupMigration(migrationClients)
+      changeRequest1.name = "changeRequest1"
 
       when(mockSRClient.addSchema(eqTo("kafka-key2"), any[String])).thenReturn("{\"id\":1}")
 
@@ -50,11 +51,12 @@ class MigrationServiceTest extends FunSpec
 
       val migrationService = new MigrationService(
         reader = mockChangeRequestReader,
-        fileStatusKeeper = mockFileStatusManager)
+        stateManager = mockFileStateManager)
 
       migrationService.run
 
       verify(mockSRClient, times(1)).addSchema(eqTo("kafka-key2"), any[String])
+      verify(mockFileStateManager).updateLastMigration(eqTo("changeRequest1"))
 
     }
   }

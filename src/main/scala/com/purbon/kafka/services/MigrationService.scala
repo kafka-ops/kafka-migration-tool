@@ -2,7 +2,7 @@ package com.purbon.kafka.services
 
 import java.io.IOException
 
-import com.purbon.kafka.FileStatusKeeper
+import com.purbon.kafka.StateManager
 import com.purbon.kafka.generator.{MigrationFileWriter, MigrationGenerator}
 import com.purbon.kafka.parsers.ChangeRequest
 import com.purbon.kafka.readers.ChangeRequestReader
@@ -16,7 +16,7 @@ import scala.collection.mutable.ArrayBuffer
   * @param fileStatusKeeper the status keeper
   */
 class MigrationService(reader: ChangeRequestReader,
-                       fileStatusKeeper: FileStatusKeeper) extends Service {
+                       stateManager: StateManager) extends Service {
 
   override def run : Unit = {
     println(s"Running the Migration service")
@@ -30,10 +30,13 @@ class MigrationService(reader: ChangeRequestReader,
           request.up
         }
       }
+      stateManager.updateLastMigration(appliedChanges.last.name)
+
     } catch {
       case e: Exception => {
         println("Rollback applied changes")
         rollback(appliedChanges)
+        stateManager.updateLastMigration("")
       }
     }
   }
@@ -74,7 +77,7 @@ class MigrationGenerationService(path: String, migrationTypeOption: Option[Strin
   * @param fileStatusKeeper the status keeper
   */
 class MigrationCleanupService(changeRequestReader: ChangeRequestReader,
-                       fileStatusKeeper: FileStatusKeeper) extends Service {
+                       fileStatusKeeper: StateManager) extends Service {
 
   override def run : Unit = {
     println(s"Running the Migration clean up service")

@@ -17,11 +17,12 @@ object KafkaMigrationToolCLI {
 
   def main(args: Array[String]): Unit = {
 
-    val fileStatusKeeper = new FileStatusKeeper
+    val stateManager = new StateManager(handler = new LocalStateHandler)
     val fileLockChannel = FileChannel.open(defaultFileLockPath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW)
     val lock = acquireLock(fileLockChannel)
     try {
-      fileStatusKeeper.load
+      stateManager.load
+      stateManager.print
       OParser.parse(parser, args, Config()) match {
         case Some(config) => {
 
@@ -35,7 +36,7 @@ object KafkaMigrationToolCLI {
             .newInstance(config.migrationsURI, scalaChangeRequestParser)
             .asInstanceOf[ChangeRequestReader]
 
-          ActionService(config, fileStatusKeeper, changeRequestReader).run
+          ActionService(config, stateManager, changeRequestReader).run
 
         }
         case _ => {
@@ -45,7 +46,7 @@ object KafkaMigrationToolCLI {
     }
     finally
     {
-      fileStatusKeeper.save
+      stateManager.save
       releaseLock(fileLockChannel, lock)
     }
   }

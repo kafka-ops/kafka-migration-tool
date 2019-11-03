@@ -3,7 +3,7 @@ package com.purbon.kafka.services
 import java.io.IOException
 
 import com.purbon.kafka.readers.ChangeRequestReader
-import com.purbon.kafka.{ActionService, Config, FileStatusKeeper}
+import com.purbon.kafka.{ActionService, Config, StateManager}
 import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.scalatest.{FunSpec, MustMatchers}
 
@@ -14,7 +14,7 @@ class ActionServiceTest  extends FunSpec
 
   describe ("An Action service manager") {
 
-    val mockFileStatusManager = mock[FileStatusKeeper]
+    val mockFileStatusManager = mock[StateManager]
     val mockChangeRequestReader = mock[ChangeRequestReader]
 
     it("execute the migration task if the migrate action if received") {
