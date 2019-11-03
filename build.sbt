@@ -1,11 +1,12 @@
 name := "kafka-migration-tool"
 
 version := "0.0.1"
-
 scalaVersion := "2.13.0"
 
 enablePlugins(JavaAppPackaging)
 enablePlugins(UniversalPlugin)
+
+val appMainClass = "com.purbon.kafka.CliTool"
 
 libraryDependencies += "org.scala-lang" % "scala-compiler" % "2.13.0"
 libraryDependencies += "org.scala-lang" % "scala-reflect" % "2.13.0"
@@ -26,15 +27,15 @@ libraryDependencies += "org.apache.logging.log4j" % "log4j-api" % "2.12.1"
 libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.12.1"
 libraryDependencies += "org.apache.kafka" % "kafka-clients" % "2.3.0"
 
-mainClass in assembly := Some("com.purbon.kafka.KafkaMigrationToolCLI")
-mainClass in Compile := Some("com.purbon.kafka.KafkaMigrationToolCLI")
+mainClass in assembly := Some(appMainClass)
+mainClass in Compile := Some(appMainClass)
 
 discoveredMainClasses in Compile := Seq()
 
 maintainer := "purbon@acm.org"
 
 lazy val excludes = jacocoExcludes in Test  :=Seq(
-  "com.purbon.kafka.KafkaMigrationToolCLI*",
+  s"${appMainClass}*",
   "com.purbon.kafka.clients.*"
 )
 

@@ -8,7 +8,7 @@ import com.purbon.kafka.readers.ChangeRequestReader
 import org.apache.kafka.clients.admin.{AdminClient, AdminClientConfig}
 import scopt.OParser
 
-object KafkaMigrationToolCLI {
+object CliTool {
 
   val changeRequestReaderClassName = "com.purbon.kafka.readers.DirectoryChangeRequestReader"
 
