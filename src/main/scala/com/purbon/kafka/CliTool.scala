@@ -19,17 +19,8 @@ object CliTool {
       stateManager.load
       OParser.parse(parser, args, Config()) match {
         case Some(config) => {
-
-          val srClient = new SchemaRegistryClient(config.schemaRegistryUrl)
-          val adminClient: AdminClient = AdminClient.create(props(config))
-          val scalaChangeRequestParser = new ScalaChangeRequestParser(srClient, new MigrationAdminClient(adminClient))
-
-          val changeRequestReader = Class.forName(changeRequestReaderClassName)
-            .getConstructor(classOf[String],
-              classOf[ChangeRequestParser])
-            .newInstance(config.migrationsURI, scalaChangeRequestParser)
-            .asInstanceOf[ChangeRequestReader]
-
+          val changeRequestParser = buildChangeRequestParser(config)
+          val changeRequestReader = buildChangeRequestReader(config, changeRequestParser)
           ActionService(config, stateManager, changeRequestReader).run
 
         }
@@ -43,6 +34,20 @@ object CliTool {
       ExecutionLock.releaseLock(cliLock)
       stateManager.save
     }
+  }
+
+  private def buildChangeRequestParser(config: Config): ChangeRequestParser = {
+    val srClient = new SchemaRegistryClient(config.schemaRegistryUrl)
+    val adminClient: AdminClient = AdminClient.create(props(config))
+    new ScalaChangeRequestParser(srClient, new MigrationAdminClient(adminClient))
+  }
+
+  private def buildChangeRequestReader(config: Config, changeRequestParser: ChangeRequestParser) : ChangeRequestReader = {
+    Class.forName(changeRequestReaderClassName)
+      .getConstructor(classOf[String],
+        classOf[ChangeRequestParser])
+      .newInstance(config.migrationsURI, changeRequestParser)
+      .asInstanceOf[ChangeRequestReader]
   }
 
   private def parser: OParser[Unit, Config] = {
