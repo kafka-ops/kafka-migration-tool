@@ -10,3 +10,7 @@ docker-compose exec kafka kafka-acls --authorizer-properties zookeeper.connect=z
 docker-compose exec kafka kafka-acls --authorizer-properties zookeeper.connect=zookeeper:2181 --add \
                --allow-principal 'User:schema' --allow-host '*' \
                --operation All --topic _schemas  --group 'schema-registry'
+
+docker-compose exec kafka kafka-acls --authorizer-properties zookeeper.connect=zookeeper:2181 --add \
+                              --allow-principal 'User:schema' --allow-host '*' \
+                              --operation Describe --topic __consumer_offsets  --group '*'
