@@ -1,5 +1,6 @@
 package com.purbon.kafka
 
+import java.io.FileInputStream
 import java.util.Properties
 
 import com.purbon.kafka.clients.MigrationAdminClient
@@ -7,6 +8,15 @@ import com.purbon.kafka.parsers.{ChangeRequestParser, ScalaChangeRequestParser}
 import com.purbon.kafka.readers.ChangeRequestReader
 import org.apache.kafka.clients.admin.{AdminClient, AdminClientConfig}
 import scopt.OParser
+
+case class Config(
+                   configFile: Option[String] = None,
+                   migrationsURI: String = "migrations",
+                   brokersUrl: String = "localhost:9092",
+                   schemaRegistryUrl: String = "http://localhost:8081",
+                   action: Option[String] = None,
+                   migrationType: Option[String] = None
+                 )
 
 object CliTool {
 
@@ -54,6 +64,10 @@ object CliTool {
 
       OParser.sequence(
         programName("Kafka Migration Tool"),
+        head("kmt", "1.x"),
+        opt[String]('a', "config-file")
+          .action((x,c) => c.copy( configFile = Some(x)))
+          .text("Kafka migration tool config file"),
         opt[String]('b', "brokers url")
           .action((x,c) => c.copy( brokersUrl = x))
           .text("Kafka brokers location"),
@@ -84,6 +98,15 @@ object CliTool {
 
   private def props(config: Config): Properties = {
     val props = new Properties()
+
+    config.configFile match {
+      case Some(file:String) => {
+        props.load(new FileInputStream(file))
+      }
+      case None => {
+        //NoOP now
+      }
+    }
     props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, config.brokersUrl)
     props
   }
