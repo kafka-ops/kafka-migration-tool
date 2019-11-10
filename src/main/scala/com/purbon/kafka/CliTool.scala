@@ -65,18 +65,6 @@ object CliTool {
       OParser.sequence(
         programName("Kafka Migration Tool"),
         head("kmt", "1.x"),
-        opt[String]('a', "config-file")
-          .action((x,c) => c.copy( configFile = Some(x)))
-          .text("Kafka migration tool config file"),
-        opt[String]('b', "brokers url")
-          .action((x,c) => c.copy( brokersUrl = x))
-          .text("Kafka brokers location"),
-        opt[String]('s', "schema-registry url")
-          .action((x,c) => c.copy( schemaRegistryUrl = x))
-          .text("Schema Registry destination url"),
-        opt[String]('m', "migrations url")
-          .action((x,c) => c.copy( migrationsURI = x))
-          .text("Where to find the stored migrations"),
         cmd("migrate")
           .action( (_,c) => c.copy(action = Some("migrate") ) )
           .text("apply all migrations"),
@@ -86,15 +74,50 @@ object CliTool {
         cmd("migrate:down")
           .action( (_,c) => c.copy(action = Some("migrate:down") ) )
           .text("remove a selected migration change"),
+        migrationParams,
         cmd("generate")
           .action( (_,c) => c.copy(action = Some("generate") ) )
-          .text("Generate a migration"),
-        opt[String]('t', "migrationType type")
-          .action((x,c) => c.copy( migrationType = Some(x)))
-          .text("The Migration Type (schemaMigration, topicMigration, accessMigration)"),
+          .text("Generate a migration")
+          .children(generatorParams)
       )
     }
   }
+
+  private def migrationParams: OParser[String, Config] = {
+    val builder = OParser.builder[Config]
+
+    {
+      import builder._
+      OParser.sequence(
+        opt[String]('a', "config-file")
+          .action((x, c) => c.copy(configFile = Some(x)))
+          .text("Kafka migration tool config file"),
+        opt[String]('b', "brokers url")
+          .action((x, c) => c.copy(brokersUrl = x))
+          .text("Kafka brokers location"),
+        opt[String]('s', "schema-registry url")
+          .action((x, c) => c.copy(schemaRegistryUrl = x))
+          .text("Schema Registry destination url"),
+        opt[String]('m', "migrations url")
+          .action((x, c) => c.copy(migrationsURI = x))
+          .text("Where to find the stored migrations")
+      )
+    }
+  }
+
+  private def generatorParams: OParser[String, Config] = {
+    val builder = OParser.builder[Config]
+
+    {
+      import builder._
+      OParser.sequence(
+        opt[String]('t', "migrationType type")
+          .action((x,c) => c.copy( migrationType = Some(x)))
+          .text("The Migration Type (schemaMigration, topicMigration, accessMigration)")
+      )
+    }
+  }
+
 
   private def props(config: Config): Properties = {
     val props = new Properties()
