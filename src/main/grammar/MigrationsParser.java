@@ -16,8 +16,8 @@ public class MigrationsParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		WS=1, OP_SCHEMA=2, OP_TOPIC=3, FUNCTION_DEF=4, FUNCTION_UP=5, FUNCTION_DOWN=6, 
-		FUNCTION_OPEN_CODE_BLOCK=7, FUNCTION_CLOSE_CODE_BLOCK=8, BODY=9;
+		WS=1, BODY=2, ASSIGN=3, OP_SCHEMA=4, OP_TOPIC=5, FUNCTION_DEF=6, FUNCTION_UP=7, 
+		FUNCTION_DOWN=8, FUNCTION_OPEN_CODE_BLOCK=9, FUNCTION_CLOSE_CODE_BLOCK=10;
 	public static final int
 		RULE_migration_type = 0, RULE_operation = 1, RULE_op_body = 2, RULE_function = 3;
 	private static String[] makeRuleNames() {
@@ -29,15 +29,15 @@ public class MigrationsParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, null, "'schema'", "'topic'", "'def'", "'up'", "'down'", "'{'", 
-			"'}'"
+			null, null, null, "'='", "'schema'", "'topic'", "'def'", "'up'", "'down'", 
+			"'{'", "'}'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "WS", "OP_SCHEMA", "OP_TOPIC", "FUNCTION_DEF", "FUNCTION_UP", "FUNCTION_DOWN", 
-			"FUNCTION_OPEN_CODE_BLOCK", "FUNCTION_CLOSE_CODE_BLOCK", "BODY"
+			null, "WS", "BODY", "ASSIGN", "OP_SCHEMA", "OP_TOPIC", "FUNCTION_DEF", 
+			"FUNCTION_UP", "FUNCTION_DOWN", "FUNCTION_OPEN_CODE_BLOCK", "FUNCTION_CLOSE_CODE_BLOCK"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -106,6 +106,11 @@ public class MigrationsParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MigrationsParserListener ) ((MigrationsParserListener)listener).exitMigration_type(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MigrationsParserVisitor ) return ((MigrationsParserVisitor<? extends T>)visitor).visitMigration_type(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Migration_typeContext migration_type() throws RecognitionException {
@@ -152,6 +157,11 @@ public class MigrationsParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MigrationsParserListener ) ((MigrationsParserListener)listener).exitOperation(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MigrationsParserVisitor ) return ((MigrationsParserVisitor<? extends T>)visitor).visitOperation(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -201,6 +211,11 @@ public class MigrationsParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MigrationsParserListener ) ((MigrationsParserListener)listener).exitOp_body(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MigrationsParserVisitor ) return ((MigrationsParserVisitor<? extends T>)visitor).visitOp_body(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Op_bodyContext op_body() throws RecognitionException {
@@ -248,6 +263,11 @@ public class MigrationsParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MigrationsParserListener ) ((MigrationsParserListener)listener).exitFunction(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MigrationsParserVisitor ) return ((MigrationsParserVisitor<? extends T>)visitor).visitFunction(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final FunctionContext function() throws RecognitionException {
@@ -276,11 +296,11 @@ public class MigrationsParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\13\27\4\2\t\2\4\3"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\f\27\4\2\t\2\4\3"+
 		"\t\3\4\4\t\4\4\5\t\5\3\2\3\2\3\3\3\3\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3"+
-		"\5\2\2\6\2\4\6\b\2\4\3\2\4\5\3\2\7\b\2\22\2\n\3\2\2\2\4\f\3\2\2\2\6\16"+
+		"\5\2\2\6\2\4\6\b\2\4\3\2\6\7\3\2\t\n\2\22\2\n\3\2\2\2\4\f\3\2\2\2\6\16"+
 		"\3\2\2\2\b\22\3\2\2\2\n\13\t\2\2\2\13\3\3\2\2\2\f\r\t\3\2\2\r\5\3\2\2"+
-		"\2\16\17\7\t\2\2\17\20\7\13\2\2\20\21\7\n\2\2\21\7\3\2\2\2\22\23\7\6\2"+
+		"\2\16\17\7\13\2\2\17\20\7\4\2\2\20\21\7\f\2\2\21\7\3\2\2\2\22\23\7\b\2"+
 		"\2\23\24\5\4\3\2\24\25\5\6\4\2\25\t\3\2\2\2\2";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());

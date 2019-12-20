@@ -2,9 +2,9 @@ lexer grammar MigrationsLexer;
 
 WS: [ \t\n]+ -> skip ;
 
-BODY : ( 'a'..'z' )+
+BODY : ( 'a'..'z' )+;
 
-ASSIGN: '='
+ASSIGN: '=';
 OP_SCHEMA: 'schema';
 OP_TOPIC: 'topic';
 
