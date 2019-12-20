@@ -1,0 +1,13 @@
+type=schema_migration
+
+def up {
+    val schema = """
+        | {"schema": "{\"type\": \"string\"}"}
+      """.stripMargin
+
+    register("kafka-key2", schema)
+}
+
+def down  {
+  remove("kafka-key2")
+}
