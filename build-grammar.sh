@@ -2,7 +2,7 @@
 
 function apply_antlr () {
  # apply antlr
- antlr -package com.purbon.kafka-migrations.grammar  -visitor *.g4
+ antlr -package com.purbon.kafka.migrations.grammar  -visitor *.g4
  # move the generated file to their source
  mv *.java com/purbon/kafka/migrations/grammar
  mv *.interp com/purbon/kafka/migrations/grammar
