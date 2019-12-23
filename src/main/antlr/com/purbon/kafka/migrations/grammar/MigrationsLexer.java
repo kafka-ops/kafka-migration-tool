@@ -1,4 +1,5 @@
 // Generated from MigrationsLexer.g4 by ANTLR 4.7.2
+package com.purbon.kafka-migrations.grammar;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

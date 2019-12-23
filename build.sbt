@@ -27,10 +27,16 @@ libraryDependencies += "org.apache.logging.log4j" % "log4j-api" % "2.12.1"
 libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.12.1"
 libraryDependencies += "org.apache.kafka" % "kafka-clients" % "2.3.0"
 
+libraryDependencies += "org.antlr" % "antlr4-runtime" % "4.7.2"
+
+
+
 mainClass in assembly := Some(appMainClass)
 mainClass in Compile := Some(appMainClass)
 
 discoveredMainClasses in Compile := Seq()
+
+unmanagedSourceDirectories in Compile += baseDirectory.value / "src" / "main" / "antlr"
 
 maintainer := "purbon@acm.org"
 
