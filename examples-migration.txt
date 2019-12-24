@@ -1,4 +1,4 @@
-type=schema_migration
+type=schema
 
 def up {
     val schema = """

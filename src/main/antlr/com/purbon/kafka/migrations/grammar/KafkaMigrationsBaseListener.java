@@ -1,4 +1,4 @@
-// Generated from MigrationsParser.g4 by ANTLR 4.7.2
+// Generated from KafkaMigrations.g4 by ANTLR 4.7.2
 package com.purbon.kafka.migrations.grammar;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -6,59 +6,71 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
- * This class provides an empty implementation of {@link MigrationsParserListener},
+ * This class provides an empty implementation of {@link KafkaMigrationsListener},
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
-public class MigrationsParserBaseListener implements MigrationsParserListener {
+public class KafkaMigrationsBaseListener implements KafkaMigrationsListener {
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMigration_type(MigrationsParser.Migration_typeContext ctx) { }
+	@Override public void enterMigration(KafkaMigrationsParser.MigrationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMigration_type(MigrationsParser.Migration_typeContext ctx) { }
+	@Override public void exitMigration(KafkaMigrationsParser.MigrationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOperation(MigrationsParser.OperationContext ctx) { }
+	@Override public void enterApply_function(KafkaMigrationsParser.Apply_functionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOperation(MigrationsParser.OperationContext ctx) { }
+	@Override public void exitApply_function(KafkaMigrationsParser.Apply_functionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOp_body(MigrationsParser.Op_bodyContext ctx) { }
+	@Override public void enterRevert_function(KafkaMigrationsParser.Revert_functionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOp_body(MigrationsParser.Op_bodyContext ctx) { }
+	@Override public void exitRevert_function(KafkaMigrationsParser.Revert_functionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunction(MigrationsParser.FunctionContext ctx) { }
+	@Override public void enterCode_block(KafkaMigrationsParser.Code_blockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunction(MigrationsParser.FunctionContext ctx) { }
+	@Override public void exitCode_block(KafkaMigrationsParser.Code_blockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMethod(KafkaMigrationsParser.MethodContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMethod(KafkaMigrationsParser.MethodContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

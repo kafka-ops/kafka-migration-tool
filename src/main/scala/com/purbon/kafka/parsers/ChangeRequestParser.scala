@@ -2,6 +2,8 @@ package com.purbon.kafka.parsers
 
 import com.purbon.kafka.SchemaRegistryClient
 import com.purbon.kafka.clients.MigrationAdminClient
+import com.purbon.kafka.migrations.grammar.{KafkaMigrationsLexer, KafkaMigrationsParser}
+import org.antlr.v4.runtime.{CharStreams, CodePointCharStream, CommonTokenStream}
 
 import scala.reflect.runtime.universe
 import scala.tools.reflect.ToolBox
@@ -44,6 +46,24 @@ class ScalaChangeRequestParser(client: SchemaRegistryClient,
       }
     }
 
+  }
+}
+
+class Antlr4ChangeRequestParser(client: SchemaRegistryClient, adminClient: MigrationAdminClient) extends ChangeRequestParser {
+
+  override def parse(data: String): ChangeRequest = {
+    println(s"Parsing $data")
+
+    val charStream: CodePointCharStream = CharStreams.fromString(data)
+    val lexer: KafkaMigrationsLexer = new KafkaMigrationsLexer(charStream)
+    val tokens: CommonTokenStream = new CommonTokenStream(lexer)
+    val parser = new KafkaMigrationsParser(tokens)
+
+    val app = new MigrationParserApp
+    parser.migration.enterRule(app)
+    println(app)
+
+    app.asChangeRequest
   }
 }
 

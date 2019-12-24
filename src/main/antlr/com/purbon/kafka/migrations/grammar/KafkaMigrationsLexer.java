@@ -1,4 +1,4 @@
-// Generated from MigrationsLexer.g4 by ANTLR 4.7.2
+// Generated from KafkaMigrations.g4 by ANTLR 4.7.2
 package com.purbon.kafka.migrations.grammar;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -10,15 +10,16 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class MigrationsLexer extends Lexer {
+public class KafkaMigrationsLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.7.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		WS=1, BODY=2, ASSIGN=3, OP_SCHEMA=4, OP_TOPIC=5, FUNCTION_DEF=6, FUNCTION_UP=7, 
-		FUNCTION_DOWN=8, FUNCTION_OPEN_CODE_BLOCK=9, FUNCTION_CLOSE_CODE_BLOCK=10;
+		T__0=1, T__1=2, T__2=3, WS=4, ID=5, ASSIGN=6, SEMICOLON=7, SCHEMA_MIGRATION_LITERAL=8, 
+		TOPIC_MIGRATION_LITERAL=9, OP_LITERAL=10, FUNCTION_OPEN_CODE_BLOCK=11, 
+		FUNCTION_CLOSE_CODE_BLOCK=12;
 	public static String[] channelNames = {
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 	};
@@ -29,23 +30,25 @@ public class MigrationsLexer extends Lexer {
 
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"WS", "BODY", "ASSIGN", "OP_SCHEMA", "OP_TOPIC", "FUNCTION_DEF", "FUNCTION_UP", 
-			"FUNCTION_DOWN", "FUNCTION_OPEN_CODE_BLOCK", "FUNCTION_CLOSE_CODE_BLOCK"
+			"T__0", "T__1", "T__2", "WS", "ID", "ASSIGN", "SEMICOLON", "SCHEMA_MIGRATION_LITERAL", 
+			"TOPIC_MIGRATION_LITERAL", "OP_LITERAL", "FUNCTION_OPEN_CODE_BLOCK", 
+			"FUNCTION_CLOSE_CODE_BLOCK"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, null, null, "'='", "'schema'", "'topic'", "'def'", "'up'", "'down'", 
-			"'{'", "'}'"
+			null, "'def'", "'up'", "'down'", null, null, "'='", "';'", "'SchemaMigration'", 
+			"'TopicMigration'", null, "'{'", "'}'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "WS", "BODY", "ASSIGN", "OP_SCHEMA", "OP_TOPIC", "FUNCTION_DEF", 
-			"FUNCTION_UP", "FUNCTION_DOWN", "FUNCTION_OPEN_CODE_BLOCK", "FUNCTION_CLOSE_CODE_BLOCK"
+			null, null, null, null, "WS", "ID", "ASSIGN", "SEMICOLON", "SCHEMA_MIGRATION_LITERAL", 
+			"TOPIC_MIGRATION_LITERAL", "OP_LITERAL", "FUNCTION_OPEN_CODE_BLOCK", 
+			"FUNCTION_CLOSE_CODE_BLOCK"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -83,13 +86,13 @@ public class MigrationsLexer extends Lexer {
 	}
 
 
-	public MigrationsLexer(CharStream input) {
+	public KafkaMigrationsLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@Override
-	public String getGrammarFileName() { return "MigrationsLexer.g4"; }
+	public String getGrammarFileName() { return "KafkaMigrations.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -107,23 +110,30 @@ public class MigrationsLexer extends Lexer {
 	public ATN getATN() { return _ATN; }
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2\fB\b\1\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2\16`\b\1\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
-		"\13\3\2\6\2\31\n\2\r\2\16\2\32\3\2\3\2\3\3\6\3 \n\3\r\3\16\3!\3\4\3\4"+
-		"\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3"+
-		"\b\3\b\3\b\3\t\3\t\3\t\3\t\3\t\3\n\3\n\3\13\3\13\2\2\f\3\3\5\4\7\5\t\6"+
-		"\13\7\r\b\17\t\21\n\23\13\25\f\3\2\3\4\2\13\f\"\"\2C\2\3\3\2\2\2\2\5\3"+
-		"\2\2\2\2\7\3\2\2\2\2\t\3\2\2\2\2\13\3\2\2\2\2\r\3\2\2\2\2\17\3\2\2\2\2"+
-		"\21\3\2\2\2\2\23\3\2\2\2\2\25\3\2\2\2\3\30\3\2\2\2\5\37\3\2\2\2\7#\3\2"+
-		"\2\2\t%\3\2\2\2\13,\3\2\2\2\r\62\3\2\2\2\17\66\3\2\2\2\219\3\2\2\2\23"+
-		">\3\2\2\2\25@\3\2\2\2\27\31\t\2\2\2\30\27\3\2\2\2\31\32\3\2\2\2\32\30"+
-		"\3\2\2\2\32\33\3\2\2\2\33\34\3\2\2\2\34\35\b\2\2\2\35\4\3\2\2\2\36 \4"+
-		"c|\2\37\36\3\2\2\2 !\3\2\2\2!\37\3\2\2\2!\"\3\2\2\2\"\6\3\2\2\2#$\7?\2"+
-		"\2$\b\3\2\2\2%&\7u\2\2&\'\7e\2\2\'(\7j\2\2()\7g\2\2)*\7o\2\2*+\7c\2\2"+
-		"+\n\3\2\2\2,-\7v\2\2-.\7q\2\2./\7r\2\2/\60\7k\2\2\60\61\7e\2\2\61\f\3"+
-		"\2\2\2\62\63\7f\2\2\63\64\7g\2\2\64\65\7h\2\2\65\16\3\2\2\2\66\67\7w\2"+
-		"\2\678\7r\2\28\20\3\2\2\29:\7f\2\2:;\7q\2\2;<\7y\2\2<=\7p\2\2=\22\3\2"+
-		"\2\2>?\7}\2\2?\24\3\2\2\2@A\7\177\2\2A\26\3\2\2\2\5\2\32!\3\b\2\2";
+		"\13\4\f\t\f\4\r\t\r\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3"+
+		"\5\6\5)\n\5\r\5\16\5*\3\5\3\5\3\6\6\6\60\n\6\r\6\16\6\61\3\7\3\7\3\b\3"+
+		"\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\n"+
+		"\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\13\3\13\5\13"+
+		"Y\n\13\3\13\3\13\3\f\3\f\3\r\3\r\2\2\16\3\3\5\4\7\5\t\6\13\7\r\b\17\t"+
+		"\21\n\23\13\25\f\27\r\31\16\3\2\4\5\2\13\f\17\17\"\"\5\2\62;C\\c|\2b\2"+
+		"\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2\2\2\2\t\3\2\2\2\2\13\3\2\2\2\2\r\3\2\2"+
+		"\2\2\17\3\2\2\2\2\21\3\2\2\2\2\23\3\2\2\2\2\25\3\2\2\2\2\27\3\2\2\2\2"+
+		"\31\3\2\2\2\3\33\3\2\2\2\5\37\3\2\2\2\7\"\3\2\2\2\t(\3\2\2\2\13/\3\2\2"+
+		"\2\r\63\3\2\2\2\17\65\3\2\2\2\21\67\3\2\2\2\23G\3\2\2\2\25X\3\2\2\2\27"+
+		"\\\3\2\2\2\31^\3\2\2\2\33\34\7f\2\2\34\35\7g\2\2\35\36\7h\2\2\36\4\3\2"+
+		"\2\2\37 \7w\2\2 !\7r\2\2!\6\3\2\2\2\"#\7f\2\2#$\7q\2\2$%\7y\2\2%&\7p\2"+
+		"\2&\b\3\2\2\2\')\t\2\2\2(\'\3\2\2\2)*\3\2\2\2*(\3\2\2\2*+\3\2\2\2+,\3"+
+		"\2\2\2,-\b\5\2\2-\n\3\2\2\2.\60\t\3\2\2/.\3\2\2\2\60\61\3\2\2\2\61/\3"+
+		"\2\2\2\61\62\3\2\2\2\62\f\3\2\2\2\63\64\7?\2\2\64\16\3\2\2\2\65\66\7="+
+		"\2\2\66\20\3\2\2\2\678\7U\2\289\7e\2\29:\7j\2\2:;\7g\2\2;<\7o\2\2<=\7"+
+		"c\2\2=>\7O\2\2>?\7k\2\2?@\7i\2\2@A\7t\2\2AB\7c\2\2BC\7v\2\2CD\7k\2\2D"+
+		"E\7q\2\2EF\7p\2\2F\22\3\2\2\2GH\7V\2\2HI\7q\2\2IJ\7r\2\2JK\7k\2\2KL\7"+
+		"e\2\2LM\7O\2\2MN\7k\2\2NO\7i\2\2OP\7t\2\2PQ\7c\2\2QR\7v\2\2RS\7k\2\2S"+
+		"T\7q\2\2TU\7p\2\2U\24\3\2\2\2VY\5\21\t\2WY\5\23\n\2XV\3\2\2\2XW\3\2\2"+
+		"\2YZ\3\2\2\2Z[\5\17\b\2[\26\3\2\2\2\\]\7}\2\2]\30\3\2\2\2^_\7\177\2\2"+
+		"_\32\3\2\2\2\6\2*\61X\3\b\2\2";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
