@@ -11,7 +11,7 @@ abstract class MigrationsParserAppBase extends KafkaMigrationsListener {
   // Generic grammar functions
 
   override def visitTerminal(node: TerminalNode): Unit = ???
-  override def visitErrorNode(node: ErrorNode): Unit = ???
+  override def visitErrorNode(node: ErrorNode): Unit = println(s"ERROR: $node")
   override def enterEveryRule(ctx: ParserRuleContext): Unit = ???
   override def exitEveryRule(ctx: ParserRuleContext): Unit = ???
 

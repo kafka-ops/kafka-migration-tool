@@ -11,7 +11,6 @@ code_block
 
 method: ID SEMICOLON ;
 
-
 WS: [ \t\n\r]+ -> skip ;
 ID : [a-zA-Z0-9]+ ;
 

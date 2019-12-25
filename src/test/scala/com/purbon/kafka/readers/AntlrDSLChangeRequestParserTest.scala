@@ -2,7 +2,7 @@ package com.purbon.kafka.readers
 
 import com.purbon.kafka.SchemaRegistryClient
 import com.purbon.kafka.clients.MigrationAdminClient
-import com.purbon.kafka.parsers.{Antlr4ChangeRequestParser, ScalaChangeRequestParser}
+import com.purbon.kafka.parsers.{Antlr4ChangeRequestParser, MigrationParsingException, ScalaChangeRequestParser}
 import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.scalatest.{FunSpec, Matchers}
 
@@ -32,7 +32,23 @@ class AntlrDSLChangeRequestParserTest  extends FunSpec
           |""".stripMargin
 
       parser.parse(migration)
+    }
 
+    it("should raise an error for an wrong input") {
+      val migration =
+        """
+          |SchemaMigration;
+          |
+          |def foo {
+          | register;
+          |};
+          |def down {
+          | delete;
+          | update;
+          |};
+          |""".stripMargin
+
+      an [MigrationParsingException] should be thrownBy parser.parse(migration)
     }
   }
 }

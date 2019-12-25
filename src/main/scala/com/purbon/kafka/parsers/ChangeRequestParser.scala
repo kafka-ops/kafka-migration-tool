@@ -54,14 +54,25 @@ class Antlr4ChangeRequestParser(client: SchemaRegistryClient, adminClient: Migra
   override def parse(data: String): ChangeRequest = {
     println(s"Parsing $data")
 
+    val errorListener = new KafkaMigrationsErrorListener()
+
     val charStream: CodePointCharStream = CharStreams.fromString(data)
     val lexer: KafkaMigrationsLexer = new KafkaMigrationsLexer(charStream)
+    lexer.addErrorListener(errorListener)
+
     val tokens: CommonTokenStream = new CommonTokenStream(lexer)
     val parser = new KafkaMigrationsParser(tokens)
+    parser.addErrorListener(errorListener)
 
     val app = new MigrationParserApp
-    parser.migration.enterRule(app)
-    println(app)
+    try {
+      parser.migration.enterRule(app)
+    }
+    catch {
+      case e: Exception => {
+        throw MigrationParsingException(e)
+      }
+    }
 
     app.asChangeRequest
   }

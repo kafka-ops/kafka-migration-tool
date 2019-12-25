@@ -3,9 +3,6 @@ name := "kafka-migration-tool"
 version := "0.0.1"
 scalaVersion := "2.13.0"
 
-enablePlugins(JavaAppPackaging)
-enablePlugins(UniversalPlugin)
-
 val appMainClass = "com.purbon.kafka.CliTool"
 
 libraryDependencies += "org.scala-lang" % "scala-compiler" % "2.13.0"
