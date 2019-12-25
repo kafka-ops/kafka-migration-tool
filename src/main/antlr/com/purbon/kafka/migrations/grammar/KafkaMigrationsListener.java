@@ -57,4 +57,34 @@ public interface KafkaMigrationsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMethod(KafkaMigrationsParser.MethodContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link KafkaMigrationsParser#params_with_comma}.
+	 * @param ctx the parse tree
+	 */
+	void enterParams_with_comma(KafkaMigrationsParser.Params_with_commaContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KafkaMigrationsParser#params_with_comma}.
+	 * @param ctx the parse tree
+	 */
+	void exitParams_with_comma(KafkaMigrationsParser.Params_with_commaContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link KafkaMigrationsParser#last_param}.
+	 * @param ctx the parse tree
+	 */
+	void enterLast_param(KafkaMigrationsParser.Last_paramContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KafkaMigrationsParser#last_param}.
+	 * @param ctx the parse tree
+	 */
+	void exitLast_param(KafkaMigrationsParser.Last_paramContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link KafkaMigrationsParser#param}.
+	 * @param ctx the parse tree
+	 */
+	void enterParam(KafkaMigrationsParser.ParamContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KafkaMigrationsParser#param}.
+	 * @param ctx the parse tree
+	 */
+	void exitParam(KafkaMigrationsParser.ParamContext ctx);
 }

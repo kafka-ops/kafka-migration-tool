@@ -71,6 +71,42 @@ public class KafkaMigrationsBaseListener implements KafkaMigrationsListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMethod(KafkaMigrationsParser.MethodContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParams_with_comma(KafkaMigrationsParser.Params_with_commaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParams_with_comma(KafkaMigrationsParser.Params_with_commaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLast_param(KafkaMigrationsParser.Last_paramContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLast_param(KafkaMigrationsParser.Last_paramContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParam(KafkaMigrationsParser.ParamContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParam(KafkaMigrationsParser.ParamContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

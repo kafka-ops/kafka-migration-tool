@@ -49,10 +49,16 @@ class MigrationParserApp extends MigrationsParserAppBase {
   override def enterCode_block(ctx: KafkaMigrationsParser.Code_blockContext): Unit = ???
   override def enterMethod(ctx: KafkaMigrationsParser.MethodContext): Unit = ???
 
-
   override def enterApply_function(ctx: KafkaMigrationsParser.Apply_functionContext): Unit = ???
   override def exitApply_function(ctx: KafkaMigrationsParser.Apply_functionContext): Unit = ???
 
   override def enterRevert_function(ctx: KafkaMigrationsParser.Revert_functionContext): Unit = ???
   override def exitRevert_function(ctx: KafkaMigrationsParser.Revert_functionContext): Unit = ???
+
+  override def enterParams_with_comma(ctx: KafkaMigrationsParser.Params_with_commaContext): Unit = ???
+  override def exitParams_with_comma(ctx: KafkaMigrationsParser.Params_with_commaContext): Unit = ???
+  override def enterLast_param(ctx: KafkaMigrationsParser.Last_paramContext): Unit = ???
+  override def exitLast_param(ctx: KafkaMigrationsParser.Last_paramContext): Unit = ???
+  override def enterParam(ctx: KafkaMigrationsParser.ParamContext): Unit = ???
+  override def exitParam(ctx: KafkaMigrationsParser.ParamContext): Unit = ???
 }

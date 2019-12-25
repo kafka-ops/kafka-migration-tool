@@ -9,7 +9,11 @@ code_block
   : FUNCTION_OPEN_CODE_BLOCK (method)+ FUNCTION_CLOSE_CODE_BLOCK
   ;
 
-method: ID SEMICOLON ;
+method: ID '(' params_with_comma last_param ')' SEMICOLON ;
+params_with_comma: (param ','  )* ;
+last_param: param?;
+param: '"' ID '"';
+
 
 WS: [ \t\n\r]+ -> skip ;
 ID : [a-zA-Z0-9]+ ;

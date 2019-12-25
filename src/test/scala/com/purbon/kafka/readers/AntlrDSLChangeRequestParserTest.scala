@@ -17,22 +17,40 @@ class AntlrDSLChangeRequestParserTest  extends FunSpec
 
   describe("A change request parser") {
 
-    it("should parse proper input files") {
+    it("should parse proper schema migrations") {
       val migration =
         """
           |SchemaMigration;
           |
           |def up {
-          | register;
+          | register( "foo" );
           |};
           |def down {
-          | delete;
-          | update;
+          | delete( "foo", "bar");
+          | update();
           |};
           |""".stripMargin
 
       parser.parse(migration)
     }
+
+    it("should parse proper topic migrations") {
+      val migration =
+        """
+          |TopicMigration;
+          |
+          |def up {
+          | register( "foo" );
+          |};
+          |def down {
+          | delete( "foo", "bar");
+          | update();
+          |};
+          |""".stripMargin
+
+      parser.parse(migration)
+    }
+
 
     it("should raise an error for an wrong input") {
       val migration =
@@ -40,10 +58,10 @@ class AntlrDSLChangeRequestParserTest  extends FunSpec
           |SchemaMigration;
           |
           |def foo {
-          | register;
+          | register();
           |};
           |def down {
-          | delete;
+          | delete();
           | update;
           |};
           |""".stripMargin
