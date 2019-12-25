@@ -1,7 +1,10 @@
 env:
   global:
   - CC_TEST_REPORTER_ID=7c1a3e12ce0a88ee4bd2f35e1307340db38e8af68b490ffe26c467312f8944bb
-jdk: openjdk8
+jdk:
+  - oraclejdk11
+  - openjdk8
+  - openjdk11
 language: scala
 scala:
 - 2.13.0
