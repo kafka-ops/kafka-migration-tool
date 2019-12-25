@@ -48,6 +48,16 @@ public interface KafkaMigrationsListener extends ParseTreeListener {
 	 */
 	void exitCode_block(KafkaMigrationsParser.Code_blockContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link KafkaMigrationsParser#variable}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariable(KafkaMigrationsParser.VariableContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KafkaMigrationsParser#variable}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariable(KafkaMigrationsParser.VariableContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link KafkaMigrationsParser#method}.
 	 * @param ctx the parse tree
 	 */

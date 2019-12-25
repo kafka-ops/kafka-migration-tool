@@ -64,6 +64,18 @@ public class KafkaMigrationsBaseListener implements KafkaMigrationsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterVariable(KafkaMigrationsParser.VariableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariable(KafkaMigrationsParser.VariableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMethod(KafkaMigrationsParser.MethodContext ctx) { }
 	/**
 	 * {@inheritDoc}

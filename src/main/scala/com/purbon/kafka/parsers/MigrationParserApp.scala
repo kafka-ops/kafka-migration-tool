@@ -61,4 +61,7 @@ class MigrationParserApp extends MigrationsParserAppBase {
   override def exitLast_param(ctx: KafkaMigrationsParser.Last_paramContext): Unit = ???
   override def enterParam(ctx: KafkaMigrationsParser.ParamContext): Unit = ???
   override def exitParam(ctx: KafkaMigrationsParser.ParamContext): Unit = ???
+
+  override def enterVariable(ctx: KafkaMigrationsParser.VariableContext): Unit = ???
+  override def exitVariable(ctx: KafkaMigrationsParser.VariableContext): Unit = ???
 }

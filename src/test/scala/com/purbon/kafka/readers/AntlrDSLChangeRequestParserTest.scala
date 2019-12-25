@@ -26,7 +26,8 @@ class AntlrDSLChangeRequestParserTest  extends FunSpec
           | register( "foo" );
           |};
           |def down {
-          | delete( "foo", "bar");
+          | var bar = "123";
+          | delete( "foo", bar);
           | update();
           |};
           |""".stripMargin

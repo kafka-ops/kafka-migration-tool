@@ -6,13 +6,14 @@ apply_function : 'def' 'up' code_block SEMICOLON ;
 revert_function : 'def' 'down' code_block SEMICOLON ;
 
 code_block
-  : FUNCTION_OPEN_CODE_BLOCK (method)+ FUNCTION_CLOSE_CODE_BLOCK
+  : FUNCTION_OPEN_CODE_BLOCK (method | variable)+ FUNCTION_CLOSE_CODE_BLOCK
   ;
 
+variable: 'var' ID '=' '"' ID '"' SEMICOLON;
 method: ID '(' params_with_comma last_param ')' SEMICOLON ;
 params_with_comma: (param ','  )* ;
 last_param: param?;
-param: '"' ID '"';
+param: '"' ID '"' | ID;
 
 
 WS: [ \t\n\r]+ -> skip ;
