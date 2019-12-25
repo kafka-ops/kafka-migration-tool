@@ -2,7 +2,7 @@ package com.purbon.kafka.readers
 
 import com.purbon.kafka.SchemaRegistryClient
 import com.purbon.kafka.clients.MigrationAdminClient
-import com.purbon.kafka.parsers.{Antlr4ChangeRequestParser, MigrationParsingException, ScalaChangeRequestParser}
+import com.purbon.kafka.parsers.{Antlr4ChangeRequestParser, MigrationParsingException}
 import org.mockito.{ArgumentMatchersSugar, MockitoSugar}
 import org.scalatest.{FunSpec, Matchers}
 

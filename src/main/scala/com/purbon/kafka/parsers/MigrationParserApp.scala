@@ -3,6 +3,7 @@ package com.purbon.kafka.parsers
 import com.purbon.kafka.migrations.grammar.{KafkaMigrationsListener, KafkaMigrationsParser}
 import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.tree.{ErrorNode, TerminalNode}
+import org.apache.logging.log4j.LogManager
 
 import scala.collection.mutable
 
@@ -22,6 +23,8 @@ abstract class MigrationsParserAppBase extends KafkaMigrationsListener {
 }
 class MigrationParserApp extends MigrationsParserAppBase {
 
+  private val LOGGER = LogManager.getLogger(classOf[MigrationParserApp])
+
   var stack = new mutable.HashMap[String, String]
 
   def asChangeRequest: ChangeRequest = {
@@ -40,10 +43,10 @@ class MigrationParserApp extends MigrationsParserAppBase {
    */
   override def enterMigration(ctx: KafkaMigrationsParser.MigrationContext): Unit = {
     val exprText = ctx.getText
-    println(s"Expression after tokenization = $exprText")
+    LOGGER.debug(s"Expression after tokenization = $exprText")
 
     val operationLiteral = ctx.OP_LITERAL().getText
-    println(s"operationLiteral = $operationLiteral")
+    LOGGER.debug(s"operationLiteral = $operationLiteral")
   }
 
   override def enterCode_block(ctx: KafkaMigrationsParser.Code_blockContext): Unit = ???

@@ -20,13 +20,13 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.8" % Test
 libraryDependencies += "org.scalamock" %% "scalamock" % "4.3.0" % Test
 libraryDependencies += "org.mockito" %% "mockito-scala-scalatest" % "1.5.12" % Test
 
-libraryDependencies += "org.apache.logging.log4j" % "log4j-api" % "2.12.1"
-libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.12.1"
 libraryDependencies += "org.apache.kafka" % "kafka-clients" % "2.3.0"
 
 libraryDependencies ++= Seq(
   "org.antlr" % "antlr4-runtime" % "4.7.2",
-  "org.antlr" % "stringtemplate" % "3.2"
+  "org.antlr" % "stringtemplate" % "3.2",
+  "org.apache.logging.log4j" % "log4j-core" % "2.13.0",
+  "org.apache.logging.log4j" % "log4j-api" % "2.13.0",
 )
 
 mainClass in assembly := Some(appMainClass)

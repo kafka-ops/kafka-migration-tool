@@ -4,6 +4,7 @@ import com.purbon.kafka.SchemaRegistryClient
 import com.purbon.kafka.clients.MigrationAdminClient
 import com.purbon.kafka.migrations.grammar.{KafkaMigrationsLexer, KafkaMigrationsParser}
 import org.antlr.v4.runtime.{CharStreams, CodePointCharStream, CommonTokenStream}
+import org.apache.logging.log4j.LogManager
 
 import scala.reflect.runtime.universe
 import scala.tools.reflect.ToolBox
@@ -51,8 +52,10 @@ class ScalaChangeRequestParser(client: SchemaRegistryClient,
 
 class Antlr4ChangeRequestParser(client: SchemaRegistryClient, adminClient: MigrationAdminClient) extends ChangeRequestParser {
 
+  private val LOGGER = LogManager.getLogger(classOf[MigrationParserApp])
+
   override def parse(data: String): ChangeRequest = {
-    println(s"Parsing $data")
+    LOGGER.debug(s"Parsing $data")
 
     val errorListener = new KafkaMigrationsErrorListener()
 
