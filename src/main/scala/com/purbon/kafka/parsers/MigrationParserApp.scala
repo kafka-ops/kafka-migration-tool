@@ -48,10 +48,14 @@ class MigrationParserApp extends MigrationsParserAppBase {
 
     val operationLiteral = ctx.OP_LITERAL().getText
     LOGGER.debug(s"operationLiteral = $operationLiteral")
+    stack.put("operationLiteral", operationLiteral);
   }
 
   override def enterCode_block(ctx: KafkaMigrationsParser.Code_blockContext): Unit = ???
-  override def enterMethod(ctx: KafkaMigrationsParser.MethodContext): Unit = ???
+  override def enterMethod(ctx: KafkaMigrationsParser.MethodContext): Unit = {
+    val exprText = ctx.getText
+    LOGGER.debug(s"Expression after tokenization = $exprText")
+  }
 
   override def enterApply_function(ctx: KafkaMigrationsParser.Apply_functionContext): Unit = ???
   override def exitApply_function(ctx: KafkaMigrationsParser.Apply_functionContext): Unit = ???
