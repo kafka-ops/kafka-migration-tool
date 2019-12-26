@@ -25,7 +25,8 @@ class MigrationParserApp extends MigrationsParserAppBase {
 
   private val LOGGER = LogManager.getLogger(classOf[MigrationParserApp])
 
-  var stack = new mutable.HashMap[String, String]
+  val stack = new mutable.HashMap[String, String]
+  val variables = new mutable.HashMap[String, String]()
 
   def asChangeRequest: ChangeRequest = {
     new DummyChangeRequest
@@ -65,6 +66,12 @@ class MigrationParserApp extends MigrationsParserAppBase {
   override def enterParam(ctx: KafkaMigrationsParser.ParamContext): Unit = ???
   override def exitParam(ctx: KafkaMigrationsParser.ParamContext): Unit = ???
 
-  override def enterVariable(ctx: KafkaMigrationsParser.VariableContext): Unit = ???
+  override def enterVariable(ctx: KafkaMigrationsParser.VariableContext): Unit = {
+    val exprText = ctx.getText
+    LOGGER.debug(s"Expression after tokenization = $exprText")
+    val key = ctx.ID(0).getText
+    val value = ctx.ID(1).getText
+    variables.put(key, value)
+  }
   override def exitVariable(ctx: KafkaMigrationsParser.VariableContext): Unit = ???
 }
