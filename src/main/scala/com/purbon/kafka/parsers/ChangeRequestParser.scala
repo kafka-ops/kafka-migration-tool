@@ -67,7 +67,7 @@ class Antlr4ChangeRequestParser(client: SchemaRegistryClient, adminClient: Migra
     val parser = new KafkaMigrationsParser(tokens)
     parser.addErrorListener(errorListener)
 
-    val app = new MigrationParserApp
+    val app = new MigrationParserApp(client, adminClient)
     try {
       parser.migration.enterRule(app)
     }
