@@ -69,5 +69,22 @@ class AntlrDSLChangeRequestParserTest  extends FunSpec
 
       an [MigrationParsingException] should be thrownBy parser.parse(migration)
     }
+
+    it("should raise an error for an wrong type of Migration") {
+      val migration =
+        """
+          |BananaMigration;
+          |
+          |def foo {
+          | register();
+          |};
+          |def down {
+          | delete();
+          | update();
+          |};
+          |""".stripMargin
+
+      an [MigrationParsingException] should be thrownBy parser.parse(migration)
+    }
   }
 }
