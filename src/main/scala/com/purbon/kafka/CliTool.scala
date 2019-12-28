@@ -4,7 +4,7 @@ import java.io.FileInputStream
 import java.util.Properties
 
 import com.purbon.kafka.clients.MigrationAdminClient
-import com.purbon.kafka.parsers.{ChangeRequestParser, ScalaChangeRequestParser}
+import com.purbon.kafka.parsers.{Antlr4ChangeRequestParser, ChangeRequestParser, ScalaChangeRequestParser}
 import com.purbon.kafka.readers.ChangeRequestReader
 import org.apache.kafka.clients.admin.{AdminClient, AdminClientConfig}
 import scopt.OParser
@@ -15,7 +15,9 @@ case class Config(
                    brokersUrl: String = "localhost:9092",
                    schemaRegistryUrl: String = "http://localhost:8081",
                    action: Option[String] = None,
-                   migrationType: Option[String] = None
+                   migrationType: Option[String] = None,
+                   scalaParser: Boolean = true,
+                   antlrParser: Boolean = false
                  )
 
 object CliTool {
@@ -31,7 +33,11 @@ object CliTool {
         case Some(config) => {
           val srClient = new SchemaRegistryClient(config.schemaRegistryUrl)
           val migrationAdminClient: MigrationAdminClient = new MigrationAdminClient(AdminClient.create(props(config)))
-          val changeRequestParser = new ScalaChangeRequestParser(srClient, migrationAdminClient)
+          val changeRequestParser = if (config.antlrParser) {
+            new Antlr4ChangeRequestParser(srClient, migrationAdminClient)
+          } else {
+            new ScalaChangeRequestParser(srClient, migrationAdminClient)
+          }
           val changeRequestReader = buildChangeRequestReader(config, changeRequestParser)
           ActionService(config, stateManager, changeRequestReader).run
         }
@@ -78,7 +84,8 @@ object CliTool {
         cmd("generate")
           .action( (_,c) => c.copy(action = Some("generate") ) )
           .text("Generate a migration")
-          .children(generatorParams)
+          .children(generatorParams),
+        inputFileGrammarParams
       )
     }
   }
@@ -114,6 +121,22 @@ object CliTool {
         opt[String]('t', "migrationType type")
           .action((x,c) => c.copy( migrationType = Some(x)))
           .text("The Migration Type (schemaMigration, topicMigration, accessMigration)")
+      )
+    }
+  }
+
+  private def inputFileGrammarParams: OParser[Unit, Config] = {
+    val builder = OParser.builder[Config]
+
+    {
+      import builder._
+      OParser.sequence(
+        opt[Unit]("scalaParser")
+          .action((_, c) => c.copy(scalaParser = true))
+          .text("use the scala parser"),
+        opt[Unit]("antlrParser")
+          .action((_, c) => c.copy(antlrParser = true))
+          .text("use the antlr parser"),
       )
     }
   }
