@@ -125,7 +125,7 @@ object CliTool {
     }
   }
 
-  private def inputFileGrammarParams: OParser[String, Config] = {
+  private def inputFileGrammarParams: OParser[Unit, Config] = {
     val builder = OParser.builder[Config]
 
     {

@@ -68,10 +68,10 @@ class MigrationParserApp(schemaClient: SchemaRegistryClient, migrationClient: Mi
         .foreach { methodName =>
           val methodMirror: ru.MethodMirror = {
             try {
-              reflectMethod[SchemaRegistryClient](methodName)
+              reflectMethod(methodName)
             } catch {
               case e: Exception => {
-                reflectMethod[MigrationAdminClient](methodName)
+                reflectMethod(methodName)
               }
             }
           }
@@ -81,12 +81,33 @@ class MigrationParserApp(schemaClient: SchemaRegistryClient, migrationClient: Mi
         }
     }
 
-    private def reflectMethod[T](methodName: String): ru.MethodMirror = {
-      val m = ru.runtimeMirror(schemaClient.getClass.getClassLoader)
-      val methodX = ru.typeOf[T].decl(ru.TermName(methodName)).asMethod
+    private def reflectMethod(methodName: String): ru.MethodMirror = {
+      val (im, methodSymbol) = findInstanceMirrorAndMethodSymbol(methodName)
+      im.reflectMethod(methodSymbol)
+    }
 
-      val im = m.reflect(schemaClient)
-      im.reflectMethod(methodX)
+    private def findInstanceMirrorAndMethodSymbol(methodName: String): (ru.InstanceMirror, ru.MethodSymbol) = {
+      try {
+        val (m, methodX) = findSchemaRegistryMethod(methodName)
+        (m.reflect(schemaClient), methodX)
+      } catch {
+        case e: Exception => {
+          val (m, methodX) = findAdminClientMethod(methodName)
+          (m.reflect(migrationClient), methodX)
+        }
+      }
+    }
+
+    private def findSchemaRegistryMethod(methodName: String): (ru.Mirror, ru.MethodSymbol) = {
+      val m = ru.runtimeMirror(schemaClient.getClass.getClassLoader)
+      val methodX = ru.typeOf[SchemaRegistryClient].decl(ru.TermName(methodName)).asMethod
+      (m, methodX)
+    }
+
+    private def findAdminClientMethod(methodName: String): (ru.Mirror, ru.MethodSymbol) = {
+      val m = ru.runtimeMirror(migrationClient.getClass.getClassLoader)
+      val methodX = ru.typeOf[MigrationAdminClient].decl(ru.TermName(methodName)).asMethod
+      (m, methodX)
     }
   }
 
