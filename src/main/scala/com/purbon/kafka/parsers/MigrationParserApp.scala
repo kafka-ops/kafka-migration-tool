@@ -68,9 +68,16 @@ class MigrationParserApp(schemaClient: SchemaRegistryClient, migrationClient: Mi
         .foreach { methodName =>
           val methodMirror: ru.MethodMirror = reflectMethod(methodName)
           val params: List[String] = up_methods.get(methodName).get("params")
-          //TODO: Add variable interpolation later (Pending)
+          params.map( param => interpolateParam(param))
           methodMirror.apply(params)
         }
+    }
+
+    private def interpolateParam(param: String ) : String = {
+      variables.get(param) match {
+        case Some(content: String) => content
+        case None => param
+      }
     }
 
     private def reflectMethod(methodName: String): ru.MethodMirror = {
